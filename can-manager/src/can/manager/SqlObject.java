@@ -13,17 +13,73 @@ public class SqlObject {
     
     SqlObject(String path) throws SQLException
     {
+        //NAME DEFINITION FROM NAME FILE .DBF (NAME = name of dbf file without .dbf extension
         String name = Paths.get(path).getFileName().toString();
         name = name.substring(0, name.lastIndexOf('.'));
         
+        //CONNECTION DB or CREATION
         System.out.println("** Connection DB **");
         connect(name);
 
+        //CREATION TABLE
         System.out.println("\n** Connection TABLE **");        
-        this.createNewTable(name);
+        createNewTable();
+    }
+        
+    private Connection connect(String name)
+    {
+        String url = "jdbc:sqlite:" + System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + name + (".db");
+
+        try {
+            conn = DriverManager.getConnection(url);
+            System.out.println("\tConnection OR creation file ./user/Desktop/" + name + ".db");            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return conn;
     }
     
-    public void selectAll()
+    private void createNewTable() {
+        try {
+            //CHECK IF THE TABLE name exist
+            String sqlCheckTable = "SELECT name FROM sqlite_master WHERE type='table' AND name='CAN'";
+            Statement stmt  = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sqlCheckTable);
+            if(!rs.next())
+            {
+                //IF NOT TABLE "CAN" CREATION
+                String sql = "CREATE TABLE IF NOT EXISTS 'CAN' (\n"
+                    + "`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+                    + "`position`	INTEGER,\n"
+                    + "`sousPosition`	INTEGER,\n"
+                    + "`variable`	INTEGER,\n"
+                    + "`ligne`	INTEGER,\n"
+                    + "`alternative`	TEXT,\n"
+                    + "`unite`	TEXT,\n"
+                    + "`publication`	INTEGER,\n"
+                    + "`debut`	INTEGER,\n"
+                    + "`texte`	TEXT\n"
+                    + ");";
+                try (Statement stmt2  = conn.createStatement();) {
+                    // create a new table
+                    stmt2.execute(sql);
+                    System.out.println("\t[ V ] A new table \"CAN\" has been created");
+                } catch (SQLException e) {
+                    System.out.println(e.getMessage());
+                }            
+            }
+            else
+                //ELSE DO NOTING
+                System.out.println("\t[ X ] Table \"CAN\" already exist");
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}
+
+    /*public void selectAll()
     {
         String sql = "SELECT * FROM orders";
         
@@ -40,57 +96,4 @@ public class SqlObject {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    }
-    
-    private Connection connect(String name)
-    {
-        String url = "jdbc:sqlite:" + System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + name + (".db");
-
-        try {
-            conn = DriverManager.getConnection(url);
-            System.out.println("\tConnection OR creation file ./user/Desktop/" + name + ".db");            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        return conn;
-    }
-    
-    private void createNewTable(String name) {
-        //CHECK IF THE TABLE name exist
-        String sqlCheckTable = "SELECT name FROM sqlite_master WHERE type='table' AND name='"+name+"'";        
-        try {
-            // create a new table
-            Statement stmt  = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sqlCheckTable);
-            if(!rs.next())
-            {
-                String sql = "CREATE TABLE IF NOT EXISTS '" + name + "' (\n"
-                    + "`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                    + "`position`	INTEGER,\n"
-                    + "`sousPosition`	INTEGER,\n"
-                    + "`variable`	INTEGER,\n"
-                    + "`ligne`	INTEGER,\n"
-                    + "`alternative`	TEXT,\n"
-                    + "`unite`	TEXT,\n"
-                    + "`publication`	INTEGER,\n"
-                    + "`debut`	INTEGER,\n"
-                    + "`texte`	TEXT\n"
-                    + ");";
-                try (Statement stmt2  = conn.createStatement();) {
-                    // create a new table
-                    stmt2.execute(sql);
-                    System.out.println("\t[ V ] A new table \"" + name + "\" has been created");
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-                }            
-            }
-            else
-                System.out.println("\t[ X ] Table \"" + name + "\" alrealy exist");
-            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-}
-
+    }*/
