@@ -11,12 +11,7 @@ public class CanManager {
     public static void main(String[] args) throws SQLException{
         String fileName = "C:/Temp/sampleSQL.db";
         
-        //http://www.sqlitetutorial.net/sqlite-java/select/
-        
         SqlObject obj = new SqlObject(fileName);
-        //obj.selectAll();
-
-
      
 /*       
     Charset stringCharset = Charset.forName("IBM437");
