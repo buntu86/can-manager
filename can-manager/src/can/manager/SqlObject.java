@@ -83,7 +83,7 @@ public class SqlObject {
                     {
                         Long sizeFile = Files.size(pathFileDBF);
                         System.out.println("\t[ V ] File DBF exist, size file " + sizeFile + "byte");
-                        //System.out.println("\t[ V ] File DBF exist");
+
                         Charset stringCharset = Charset.forName("IBM437");
                         //2° read file
                         BufferedReader in = Files.newBufferedReader(pathFileDBF, stringCharset);
@@ -96,7 +96,28 @@ public class SqlObject {
 
                         List<String> liste = java.util.Arrays.asList(line2.split("(?<=\\G.{"+nbrChar+"})"));    
 
-                        Iterator<String> iterator = liste.iterator();                        
+                        Iterator<String> iterator = liste.iterator();   
+
+                        while (iterator.hasNext()) {
+                            String nodes = iterator.next();
+
+                            if(nodes.length()==78)
+                           {
+                               String position = new String(nodes.toCharArray(), 1, 3);
+                               String sousPosition = new String(nodes.toCharArray(), 4, 2);
+                               String variable = new String(nodes.toCharArray(), 7, 2);
+                               String ligne = new String(nodes.toCharArray(), 9, 2);
+                               String alternative = new String(nodes.toCharArray(), 11, 1);
+                               String unite = new String(nodes.toCharArray(), 12, 2);
+                               String publication = new String(nodes.toCharArray(), 14, 2);
+                               String debut = new String(nodes.toCharArray(), 16, 2);
+                               String texte = new String(nodes.toCharArray(), 18, 60);
+                               
+                               System.out.println(position + "|" + sousPosition + "|" + variable + "|" + ligne + "|" + alternative + "|" + unite + "|" + publication + "|" + debut + "|" + texte + "|");
+                           }
+                        }
+                        
+                        //INSERT INTO `CAN`(`ID`,`position`,`sousPosition`,`variable`,`ligne`,`alternative`,`unite`,`publication`,`debut`,`texte`) VALUES (NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                     }    
                     else
                         System.out.println("\t[ X ] File DBF not exist");
