@@ -1,5 +1,7 @@
 package can.manager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,13 +11,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
+import java.util.List;
 
 public class SqlObject {
     
     private Connection conn = null;
     private String pathString = null;
     
-    SqlObject(String path) throws SQLException
+    SqlObject(String path) throws SQLException, IOException
     {
         //NAME DEFINITION FROM NAME FILE .DBF (NAME = name of dbf file without .dbf extension
         String name = Paths.get(path).getFileName().toString();
@@ -45,7 +49,7 @@ public class SqlObject {
         return conn;
     }
     
-    private void createNewTable(){
+    private void createNewTable() throws IOException{
         try {
             //CHECK IF THE TABLE name exist
             String sqlCheckTable = "SELECT name FROM sqlite_master WHERE type='table' AND name='CAN'";
@@ -77,14 +81,26 @@ public class SqlObject {
                     
                     if(Files.exists(pathFileDBF))
                     {
-                        //Long sizeFile = Files.size(pathFileDBF);
-                        //System.out.println("\t[ V ] File DBF exist, size file " + sizeFile + "byte");
-                        System.out.println("\t[ V ] File DBF exist");
+                        Long sizeFile = Files.size(pathFileDBF);
+                        System.out.println("\t[ V ] File DBF exist, size file " + sizeFile + "byte");
+                        //System.out.println("\t[ V ] File DBF exist");
                         Charset stringCharset = Charset.forName("IBM437");
+                        //2° read file
+                        BufferedReader in = Files.newBufferedReader(pathFileDBF, stringCharset);
+                        String line1=null;
+                        String line2=null;                       
+                        int nbrChar=78;
+                        
+                        line1=in.readLine();
+                        line2=in.readLine();
+
+                        List<String> liste = java.util.Arrays.asList(line2.split("(?<=\\G.{"+nbrChar+"})"));    
+
+                        Iterator<String> iterator = liste.iterator();                        
                     }    
                     else
                         System.out.println("\t[ X ] File DBF not exist");
-                    
+                                        
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }            

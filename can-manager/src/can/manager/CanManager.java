@@ -1,11 +1,13 @@
 package can.manager;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class CanManager {
 
-    public static void main(String[] args) throws SQLException{
-        String fileName = "C:/Temp/sampleSQL.db";
+    public static void main(String[] args) throws SQLException, IOException{
+        //FILE .dbf must be on desktop 
+        String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "F24115.db";
         
         SqlObject obj = new SqlObject(fileName);
      
@@ -35,7 +37,9 @@ public class CanManager {
     
     Iterator<String> iterator = liste.iterator();
     
-   
+    ------>
+        
+        
     while (iterator.hasNext()) {
         String nodes = iterator.next();
         
