@@ -2,10 +2,6 @@ package can.manager;
 
 import java.sql.SQLException;
 
-/**
- *
- * @author adrienpillonel
- */
 public class CanManager {
 
     public static void main(String[] args) throws SQLException{

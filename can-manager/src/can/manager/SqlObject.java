@@ -1,5 +1,8 @@
 package can.manager;
 
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,12 +13,14 @@ import java.sql.Statement;
 public class SqlObject {
     
     private Connection conn = null;
+    private String pathString = null;
     
     SqlObject(String path) throws SQLException
     {
         //NAME DEFINITION FROM NAME FILE .DBF (NAME = name of dbf file without .dbf extension
         String name = Paths.get(path).getFileName().toString();
         name = name.substring(0, name.lastIndexOf('.'));
+        setPath(path);
         
         //CONNECTION DB or CREATION
         System.out.println("** Connection DB **");
@@ -40,7 +45,7 @@ public class SqlObject {
         return conn;
     }
     
-    private void createNewTable() {
+    private void createNewTable(){
         try {
             //CHECK IF THE TABLE name exist
             String sqlCheckTable = "SELECT name FROM sqlite_master WHERE type='table' AND name='CAN'";
@@ -65,6 +70,21 @@ public class SqlObject {
                     // create a new table
                     stmt2.execute(sql);
                     System.out.println("\t[ V ] A new table \"CAN\" has been created");
+                    
+                    //ADD NEW ARTICLES FROM .DBF
+                    //1° verification if the file exist
+                    Path pathFileDBF = Paths.get(getPath());   
+                    
+                    if(Files.exists(pathFileDBF))
+                    {
+                        //Long sizeFile = Files.size(pathFileDBF);
+                        //System.out.println("\t[ V ] File DBF exist, size file " + sizeFile + "byte");
+                        System.out.println("\t[ V ] File DBF exist");
+                        Charset stringCharset = Charset.forName("IBM437");
+                    }    
+                    else
+                        System.out.println("\t[ X ] File DBF not exist");
+                    
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }            
@@ -77,23 +97,33 @@ public class SqlObject {
             System.out.println(e.getMessage());
         }
     }
+
+    private void setPath(String path) {
+        pathString=path;
+    }
+    
+    private String getPath()
+    {
+        return this.pathString;
+    }
+    
 }
 
-    /*public void selectAll()
-    {
-        String sql = "SELECT * FROM orders";
-        
-        try (
-             Statement stmt  = conn.createStatement();
-             ResultSet rs    = stmt.executeQuery(sql)){
-            
-            // loop through the result set
-            while (rs.next()) {
-                System.out.println(rs.getInt("OrderID") +  "\t" + 
-                                   rs.getString("CustomerID") + "\t" +
-                                   rs.getDouble("OrderDate"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+/*public void selectAll()
+{
+    String sql = "SELECT * FROM orders";
+
+    try (
+         Statement stmt  = conn.createStatement();
+         ResultSet rs    = stmt.executeQuery(sql)){
+
+        // loop through the result set
+        while (rs.next()) {
+            System.out.println(rs.getInt("OrderID") +  "\t" + 
+                               rs.getString("CustomerID") + "\t" +
+                               rs.getDouble("OrderDate"));
         }
-    }*/
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+}*/
