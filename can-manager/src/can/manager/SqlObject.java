@@ -113,11 +113,17 @@ public class SqlObject {
                                String debut = new String(nodes.toCharArray(), 16, 2);
                                String texte = new String(nodes.toCharArray(), 18, 60);
                                
-                               System.out.println(position + "|" + sousPosition + "|" + variable + "|" + ligne + "|" + alternative + "|" + unite + "|" + publication + "|" + debut + "|" + texte + "|");
+                               /*String sqlInsertInto = "INSERT INTO CAN"
+                                       + "(position,sousPosition,variable,"
+                                       + "ligne,alternative,unite,publication,debut,texte) "
+                                       + "VALUES (" + position + "," + sousPosition + "," + variable + "," + ligne + "," + alternative + "," + unite + "," + publication + "," + debut + "," + texte + ")";*/
+                               String sqlInsertInto = "INSERT INTO CAN (position) VALUES(" + position + ")";
+                                Statement stmt3  = conn.createStatement();
+                                stmt3.execute(sqlInsertInto);
+                               
+                               //System.out.println(position + "|" + sousPosition + "|" + variable + "|" + ligne + "|" + alternative + "|" + unite + "|" + publication + "|" + debut + "|" + texte + "|");
                            }
                         }
-                        
-                        //INSERT INTO `CAN`(`ID`,`position`,`sousPosition`,`variable`,`ligne`,`alternative`,`unite`,`publication`,`debut`,`texte`) VALUES (NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
                     }    
                     else
                         System.out.println("\t[ X ] File DBF not exist");
