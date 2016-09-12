@@ -102,12 +102,14 @@ public class SqlObject {
                         
                         long sizeListe=liste.size();
                         long oldPourcent=0;
-
+                        
+                        String sqlInsertInto = ("INSERT INTO CAN (position,sousPosition,variable,ligne,alternative,unite,publication,debut,texte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        PreparedStatement stmtPrepared = conn.prepareStatement(sqlInsertInto);
+                        
                         while (iterator.hasNext()) {
                             String nodes = iterator.next();
-
                             if(nodes.length()==78)
-                           {
+                            {
                                 String position = new String(nodes.toCharArray(), 1, 3);
                                 String sousPosition = new String(nodes.toCharArray(), 4, 2);
                                 String variable = new String(nodes.toCharArray(), 7, 2);
@@ -116,11 +118,8 @@ public class SqlObject {
                                 String unite = new String(nodes.toCharArray(), 12, 2);
                                 String publication = new String(nodes.toCharArray(), 14, 2);
                                 String debut = new String(nodes.toCharArray(), 16, 2);
-                                String texte = new String(nodes.toCharArray(), 18, 60);
+                                String texte = new String(nodes.toCharArray(), 18, 60);                        
 
-                                PreparedStatement stmtPrepared = null;
-                                stmtPrepared = conn.prepareStatement("INSERT INTO CAN (position,sousPosition,variable,ligne,alternative,unite,publication,debut,texte) "
-                                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                                 stmtPrepared.setString(1, position);
                                 stmtPrepared.setString(2, sousPosition);
                                 stmtPrepared.setString(3, variable);
@@ -131,18 +130,14 @@ public class SqlObject {
                                 stmtPrepared.setString(8, debut);
                                 stmtPrepared.setString(9, texte);
                                 
-                                stmtPrepared.executeUpdate();
-                                
-                                long pourcent = (i*100/sizeListe);
-                                i++;
-                                if(oldPourcent!=pourcent)
-                                    System.out.print(pourcent+"%|");
-                                
-                                oldPourcent = pourcent;
-
-                               //System.out.println(position + "|" + sousPosition + "|" + variable + "|" + ligne + "|" + alternative + "|" + unite + "|" + publication + "|" + debut + "|" + texte + "|");
-                           }
+                                stmtPrepared.addBatch();                            
+                            }
                         }
+
+                        int[] updateCounts = stmtPrepared.executeBatch();                          
+                        conn.commit();
+                        System.out.println("ERROR at " + updateCounts);
+
                     }    
                     else
                         System.out.println("\t[ X ] File DBF not exist");
