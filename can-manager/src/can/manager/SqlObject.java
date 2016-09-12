@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -116,28 +117,29 @@ public class SqlObject {
                                 String publication = new String(nodes.toCharArray(), 14, 2);
                                 String debut = new String(nodes.toCharArray(), 16, 2);
                                 String texte = new String(nodes.toCharArray(), 18, 60);
+
+                                PreparedStatement stmtPrepared = null;
+                                stmtPrepared = conn.prepareStatement("INSERT INTO CAN (position,sousPosition,variable,ligne,alternative,unite,publication,debut,texte) "
+                                        + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                stmtPrepared.setString(1, position);
+                                stmtPrepared.setString(2, sousPosition);
+                                stmtPrepared.setString(3, variable);
+                                stmtPrepared.setString(4, ligne);
+                                stmtPrepared.setString(5, alternative);
+                                stmtPrepared.setString(6, unite);
+                                stmtPrepared.setString(7, publication);
+                                stmtPrepared.setString(8, debut);
+                                stmtPrepared.setString(9, texte);
+                                
+                                stmtPrepared.executeUpdate();
+                                
                                 long pourcent = (i*100/sizeListe);
                                 i++;
-                                /*String sqlInsertInto = "INSERT INTO CAN"
-                                        + "(position,sousPosition,variable,"
-                                        + "ligne,alternative,unite,publication,debut,texte) "
-                                        + "VALUES (" + position + "," + sousPosition + "," 
-                                        + variable + "," + ligne + "," + alternative + "," 
-                                        + unite + "," + publication + "," + debut + "," + texte + ")";*/
-                                String sqlInsertInto = "INSERT INTO CAN "
-                                        + "(position,sousPosition,variable,ligne,alternative,unite,publication,debut) "
-                                        + "VALUES(\'" + position + "\',\'" + sousPosition + "\',\'"
-                                        + variable + "\',\'" + ligne + "\',\'"
-                                        + alternative + "\',\'" + unite + "\',\'"
-                                        + publication + "\',\'" + debut + "\')";
-                                Statement stmt3  = conn.createStatement();
-                                stmt3.execute(sqlInsertInto);
-                                
                                 if(oldPourcent!=pourcent)
                                     System.out.print(pourcent+"%|");
                                 
                                 oldPourcent = pourcent;
-                                
+
                                //System.out.println(position + "|" + sousPosition + "|" + variable + "|" + ligne + "|" + alternative + "|" + unite + "|" + publication + "|" + debut + "|" + texte + "|");
                            }
                         }
