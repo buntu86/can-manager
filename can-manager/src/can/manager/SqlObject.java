@@ -90,37 +90,54 @@ public class SqlObject {
                         String line1=null;
                         String line2=null;                       
                         int nbrChar=78;
+                        long i=0;
                         
                         line1=in.readLine();
                         line2=in.readLine();
 
                         List<String> liste = java.util.Arrays.asList(line2.split("(?<=\\G.{"+nbrChar+"})"));    
 
-                        Iterator<String> iterator = liste.iterator();   
+                        Iterator<String> iterator = liste.iterator(); 
+                        
+                        long sizeListe=liste.size();
+                        long oldPourcent=0;
 
                         while (iterator.hasNext()) {
                             String nodes = iterator.next();
 
                             if(nodes.length()==78)
                            {
-                               String position = new String(nodes.toCharArray(), 1, 3);
-                               String sousPosition = new String(nodes.toCharArray(), 4, 2);
-                               String variable = new String(nodes.toCharArray(), 7, 2);
-                               String ligne = new String(nodes.toCharArray(), 9, 2);
-                               String alternative = new String(nodes.toCharArray(), 11, 1);
-                               String unite = new String(nodes.toCharArray(), 12, 2);
-                               String publication = new String(nodes.toCharArray(), 14, 2);
-                               String debut = new String(nodes.toCharArray(), 16, 2);
-                               String texte = new String(nodes.toCharArray(), 18, 60);
-                               
-                               /*String sqlInsertInto = "INSERT INTO CAN"
-                                       + "(position,sousPosition,variable,"
-                                       + "ligne,alternative,unite,publication,debut,texte) "
-                                       + "VALUES (" + position + "," + sousPosition + "," + variable + "," + ligne + "," + alternative + "," + unite + "," + publication + "," + debut + "," + texte + ")";*/
-                               String sqlInsertInto = "INSERT INTO CAN (position) VALUES(" + position + ")";
+                                String position = new String(nodes.toCharArray(), 1, 3);
+                                String sousPosition = new String(nodes.toCharArray(), 4, 2);
+                                String variable = new String(nodes.toCharArray(), 7, 2);
+                                String ligne = new String(nodes.toCharArray(), 9, 2);
+                                String alternative = new String(nodes.toCharArray(), 11, 1);
+                                String unite = new String(nodes.toCharArray(), 12, 2);
+                                String publication = new String(nodes.toCharArray(), 14, 2);
+                                String debut = new String(nodes.toCharArray(), 16, 2);
+                                String texte = new String(nodes.toCharArray(), 18, 60);
+                                long pourcent = (i*100/sizeListe);
+                                i++;
+                                /*String sqlInsertInto = "INSERT INTO CAN"
+                                        + "(position,sousPosition,variable,"
+                                        + "ligne,alternative,unite,publication,debut,texte) "
+                                        + "VALUES (" + position + "," + sousPosition + "," 
+                                        + variable + "," + ligne + "," + alternative + "," 
+                                        + unite + "," + publication + "," + debut + "," + texte + ")";*/
+                                String sqlInsertInto = "INSERT INTO CAN "
+                                        + "(position,sousPosition,variable,ligne,alternative,unite,publication,debut) "
+                                        + "VALUES(\'" + position + "\',\'" + sousPosition + "\',\'"
+                                        + variable + "\',\'" + ligne + "\',\'"
+                                        + alternative + "\',\'" + unite + "\',\'"
+                                        + publication + "\',\'" + debut + "\')";
                                 Statement stmt3  = conn.createStatement();
                                 stmt3.execute(sqlInsertInto);
-                               
+                                
+                                if(oldPourcent!=pourcent)
+                                    System.out.print(pourcent+"%|");
+                                
+                                oldPourcent = pourcent;
+                                
                                //System.out.println(position + "|" + sousPosition + "|" + variable + "|" + ligne + "|" + alternative + "|" + unite + "|" + publication + "|" + debut + "|" + texte + "|");
                            }
                         }
