@@ -20,7 +20,7 @@ public class SqlObject {
     private Connection conn = null;
     private String pathString = null;
     
-    SqlObject(String path) throws SQLException, IOException
+    SqlObject(String path) throws SQLException, IOException, InterruptedException
     {
         //NAME DEFINITION FROM NAME FILE .DBF (NAME = name of dbf file without .dbf extension
         String name = Paths.get(path).getFileName().toString();
@@ -50,7 +50,7 @@ public class SqlObject {
         return conn;
     }
     
-    private void createNewTable() throws IOException{
+    private void createNewTable() throws IOException, InterruptedException{
         try {
             //CHECK IF THE TABLE name exist
             String sqlCheckTable = "SELECT name FROM sqlite_master WHERE type='table' AND name='CAN'";
@@ -134,10 +134,14 @@ public class SqlObject {
                             }
                         }
 
-                        int[] updateCounts = stmtPrepared.executeBatch();                          
+                        long start_time = System.currentTimeMillis();
+                        int[] updateCounts = stmtPrepared.executeBatch();   
+                        
                         conn.commit();
-                        System.out.println("ERROR at " + updateCounts);
-
+                        long end_time = System.currentTimeMillis();
+                        long difference = end_time-start_time;
+                        
+                        System.out.println("\tDB is created in : " + difference + " ms");
                     }    
                     else
                         System.out.println("\t[ X ] File DBF not exist");
