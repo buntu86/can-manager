@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -18,6 +21,7 @@ public class ExportDBFtoSQLite {
     
     private Path path_DBFfile;
     private String fileName;
+    private Connection conn = null;    
     
     //Path pathFileDBF = Paths.get(getPath());  
 
@@ -25,8 +29,9 @@ public class ExportDBFtoSQLite {
 
         path_DBFfile = Paths.get(pathString);
 
-        if(checkPathDBF())
+        if(checkPathDBF() & connect())
         {
+            
         
         }
     }
@@ -55,4 +60,36 @@ public class ExportDBFtoSQLite {
             return false;       
         }
     }
+    
+    //SQL connexion
+    //private Connection connect()
+    private boolean connect()
+    {
+        String dbFile = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + fileName + (".db");
+                
+        if(!Files.exists(Paths.get(dbFile)))
+        {
+            System.out.println("[ V ] OK creating file .db");
+            return true;
+    /*        String url = "jdbc:sqlite:" + System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + name + (".db");
+
+            try {
+                conn = DriverManager.getConnection(url);
+                System.out.println("\tConnection OR creation file ./user/Desktop/" + name + ".db");            
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+            return conn;*/            
+        }
+        
+        else
+        {
+            System.out.println("[ X ] File .db alreally exist");
+            return false;
+        }
+        
+        
+
+    }    
 }
