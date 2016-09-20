@@ -78,7 +78,7 @@ public class SqlObject {
                     
                     //ADD NEW ARTICLES FROM .DBF
                     //1° verification if the file exist
-                    Path pathFileDBF = Paths.get(getPath());   
+                    Path pathFileDBF = Paths.get(getPath());  
                     
                     if(Files.exists(pathFileDBF))
                     {

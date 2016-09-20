@@ -14,7 +14,9 @@ public class CanManager {
         else
             fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "F24115.DBF";
         
-        SqlObject obj = new SqlObject(fileName);
+        ExportDBFtoSQLite run = new ExportDBFtoSQLite(fileName);
+        
+        //SqlObject obj = new SqlObject(fileName);
         
         System.out.println("\nPress ENTER to close de console");
         int read = System.in.read();
