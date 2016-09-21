@@ -11,7 +11,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -21,15 +23,15 @@ public class ExportDBFtoSQLite {
     
     private Path path_DBFfile;
     private String fileName;
-    private Connection conn = null;    
+    private Connection conn = null;  
     
     //Path pathFileDBF = Paths.get(getPath());  
 
-    ExportDBFtoSQLite(String pathString) throws IOException{
+    ExportDBFtoSQLite(String pathString) throws IOException, InterruptedException{
 
         path_DBFfile = Paths.get(pathString);
 
-        if(checkPathDBF() & connect())
+        if(checkPathDBF() && connect() && createNewTable())
         {
             
         
@@ -38,24 +40,24 @@ public class ExportDBFtoSQLite {
 
     //Valid if the file exist AND the extension is correct
     private boolean checkPathDBF() throws IOException {
-        if(Files.exists(path_DBFfile)){
+        if(Files.exists(path_DBFfile)) {
             String nameFile = path_DBFfile.getFileName().toString();
             String extensionFile = nameFile.substring(nameFile.lastIndexOf('.')+1);
             this.fileName = nameFile.substring(0, nameFile.lastIndexOf('.'));
 
-            if(extensionFile.toLowerCase().equals("dbf")){
+            if(extensionFile.toLowerCase().equals("dbf")) {
                 Long sizeFile = Files.size(path_DBFfile);
                 System.out.println("[ V ] File DBF exist, name file \"" + this.fileName + "\", extension \"" + extensionFile.toLowerCase() +", size file " + sizeFile + "byte");
                 return true;
             }
             
-            else{
+            else {
                 System.out.println("[ X ] File is not DBF...");
                 return false;                           
             }
         }
         
-        else{
+        else {
             System.out.println("[ X ] File DBF not fund...");
             return false;       
         }
@@ -67,29 +69,47 @@ public class ExportDBFtoSQLite {
     {
         String dbFile = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + fileName + (".db");
                 
-        if(!Files.exists(Paths.get(dbFile)))
-        {
+        if(!Files.exists(Paths.get(dbFile))) {
             System.out.println("[ V ] OK creating file .db");
-            return true;
-    /*        String url = "jdbc:sqlite:" + System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + name + (".db");
 
             try {
-                conn = DriverManager.getConnection(url);
-                System.out.println("\tConnection OR creation file ./user/Desktop/" + name + ".db");            
+                this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
+                System.out.println("[ V ] Creation AND connection to file ./user/Desktop/" + fileName + ".db");
+                return true;
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("[ X ] " + e.getMessage());
+                return false;
             }
-
-            return conn;*/            
         }
         
-        else
-        {
+        else {
             System.out.println("[ X ] File .db alreally exist");
             return false;
         }
-        
-        
-
     }    
+    
+    private boolean createNewTable() throws IOException, InterruptedException{
+        String sql = "CREATE TABLE IF NOT EXISTS 'CAN' (\n"
+            + "`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+            + "`position`	INTEGER,\n"
+            + "`subPosition`	INTEGER,\n"
+            + "`variable`	INTEGER,\n"
+            + "`line`	INTEGER,\n"
+            + "`alt`	TEXT,\n"
+            + "`unit`	TEXT,\n"
+            + "`publication`	INTEGER,\n"
+            + "`begin`	INTEGER,\n"
+            + "`text`	TEXT\n"
+            + ");";
+        try (Statement stmt  = conn.createStatement();) {
+            // create a new table
+            stmt.execute(sql);
+            System.out.println("[ V ] A new table \"CAN\" has been created");
+            return true;
+
+            } catch (SQLException e) {
+        System.out.println("[ X ] " + e.getMessage());
+        return false;
+        }   
+    }
 }
