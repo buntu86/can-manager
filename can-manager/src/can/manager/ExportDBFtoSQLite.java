@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
@@ -128,8 +127,6 @@ public class ExportDBFtoSQLite {
         String line1=null;
         String line2=null;                       
         int nbrChar=78;
-        long i=0;        
-        long oldPourcent=0;
         
         line1=in.readLine();
         line2=in.readLine();
@@ -138,15 +135,15 @@ public class ExportDBFtoSQLite {
 
         Iterator<String> iterator = liste.iterator(); 
 
-        long sizeListe=liste.size();
-
-        String sqlInsertInto = ("INSERT INTO CAN (position,subPosition,variable,line,alt,unit,publication,begin,text) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        PreparedStatement stmtPrepared = conn.prepareStatement(sqlInsertInto);
+        Statement stat = conn.createStatement();
+        stat.executeUpdate("BEGIN;");
 
         while (iterator.hasNext()) {
             String nodes = iterator.next();
             if(nodes.length()==78)
             {
+                String sqlInsertInto = ("INSERT INTO CAN (position,subPosition,variable,line,alt,unit,publication,begin,text) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement stmtPrepared = conn.prepareStatement(sqlInsertInto);                
                 String position = new String(nodes.toCharArray(), 1, 3);
                 String subPosition = new String(nodes.toCharArray(), 4, 2);
                 String variable = new String(nodes.toCharArray(), 7, 2);
@@ -167,17 +164,10 @@ public class ExportDBFtoSQLite {
                 stmtPrepared.setString(8, begin);
                 stmtPrepared.setString(9, text);
 
-                stmtPrepared.addBatch();                            
+                stmtPrepared.executeUpdate();                
             }
         }
-
-        long start_time = System.currentTimeMillis();
-        int[] updateCounts = stmtPrepared.executeBatch();   
-
-        conn.commit();
-        long end_time = System.currentTimeMillis();
-        long difference = end_time-start_time;
-
-        System.out.println("[ V ] DB is created in : " + difference + " ms");   
+        stat.executeUpdate("COMMIT;");
+        System.out.println("[ V ] Table CAN is populated");   
     }
 }

@@ -16,8 +16,6 @@ public class CanManager {
         
         ExportDBFtoSQLite run = new ExportDBFtoSQLite(fileName);
         
-        //SqlObject obj = new SqlObject(fileName);
-        
         System.out.println("\nPress ENTER to close de console");
         //int read = System.in.read();
 
