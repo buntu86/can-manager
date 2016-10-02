@@ -1,8 +1,12 @@
 package can.manager;
 
+import can.manager.model.Article;
+import can.manager.view.CatalogViewerController;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -13,7 +17,17 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private ObservableList<Article> articleData = FXCollections.observableArrayList();
 
+    public MainApp(){
+        articleData.add(new Article(900, 100, "test"));
+        articleData.add(new Article(901, 101, "test2"));
+    }
+    
+    public ObservableList<Article> getArticleData(){
+        return articleData;
+    }
+    
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -53,6 +67,10 @@ public class MainApp extends Application {
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(catalogViewer);
+            
+            CatalogViewerController controller = loader.getController();
+            controller.setMainApp(this);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
