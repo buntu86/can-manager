@@ -59,12 +59,5 @@ public class CanManager {
         
         CatalogCAN data = new CatalogCAN(fileName);
         
-        
-        
-
-        
-
-        
-        
    }
 }

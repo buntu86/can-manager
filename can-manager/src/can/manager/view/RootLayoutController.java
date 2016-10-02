@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author adrienpillonel
  */
-public class CatalogViewerController implements Initializable {
+public class RootLayoutController implements Initializable {
 
     /**
      * Initializes the controller class.
