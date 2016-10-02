@@ -1,11 +1,36 @@
 package can.manager;
 
-import can.manager.data.QuerySQL;
+import can.manager.data.CatalogCAN;
 import java.io.IOException;
 import java.sql.SQLException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class CanManager {
 
+    /*
+    //http://code.makery.ch/library/javafx-8-tutorial/fr/part1/
+    private Stage pimaryStage;
+    private BorderPane rootLayout;
+    
+    @Override
+    public void start(Stage primaryStage){
+        this.pimaryStage = primaryStage;
+        this.pimaryStage.setTitle("CanManager");
+        
+        initRootLayout();
+        
+        showCanViewer();
+    }
+    
+    public void initRootLayout(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(CanManger.class.getResource("view/RootLayout.fxml"));
+        }
+    }*/
+    
     public static void main(String[] args) throws SQLException, IOException, InterruptedException{
         
         String fileName;
@@ -32,11 +57,13 @@ public class CanManager {
         else
             fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";
         
-        QuerySQL data = new QuerySQL(fileName);
+        CatalogCAN data = new CatalogCAN(fileName);
+        
+        
         
 
         
-        //http://code.makery.ch/library/javafx-8-tutorial/fr/part1/
+
         
         
    }
