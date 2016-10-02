@@ -71,6 +71,13 @@ public class MainApp extends Application {
             CatalogViewerController controller = loader.getController();
             controller.setMainApp(this);
             
+            for(int i=0; i<articleData.size(); i++) 
+            {
+                System.out.print(articleData.get(i).getNumber() + " ");
+                System.out.print(articleData.get(i).getSubNumber() + " ");
+                System.out.println(articleData.get(i).getText());
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,5 +93,6 @@ public class MainApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        
     }
 }
