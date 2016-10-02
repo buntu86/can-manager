@@ -5,23 +5,36 @@
  */
 package can.manager.view;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import can.manager.MainApp;
+import can.manager.model.Article;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
-/**
- * FXML Controller class
- *
- * @author adrienpillonel
- */
-public class CatalogViewerController implements Initializable {
+public class CatalogViewerController  {
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+    @FXML
+    private TableView<Article> articleTable;
+    @FXML
+    private TableColumn<Article, Integer> numberColumn;
+    @FXML
+    private TableColumn<Article, Integer> subNumberColumn;
+    @FXML
+    private TableColumn<Article, String> textColumn;
     
+    private MainApp mainApp;
+    
+    public CatalogViewerController(){
+    }
+    
+    private void initilaize(){
+        numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
+        subNumberColumn.setCellValueFactory(cellData -> cellData.getValue().subNumberProperty().asObject());
+        textColumn.setCellValueFactory(cellData -> cellData.getValue().textProperty());
+    }
+    
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
+        articleTable.setItems(mainApp.getArticleData());
+    }   
 }

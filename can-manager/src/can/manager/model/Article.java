@@ -45,15 +45,15 @@ public class Article {
         this.text.set(text);
     }
 
-    public IntegerProperty number(){
+    public IntegerProperty numberProperty(){
         return number;
     }
 
-    public IntegerProperty subNumber(){
+    public IntegerProperty subNumberProperty(){
         return subNumber;
     }
 
-    public StringProperty text(){
+    public StringProperty textProperty(){
         return text;
     }
 }
