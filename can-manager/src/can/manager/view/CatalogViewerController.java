@@ -23,8 +23,8 @@ public class CatalogViewerController {
     
     @FXML
     private void initialize() {
-        numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
-        subNumberColumn.setCellValueFactory(cellData -> cellData.getValue().subNumberProperty().asObject());
+        numberColumn.setCellValueFactory(cellData -> cellData.getValue().positionProperty().asObject());
+        subNumberColumn.setCellValueFactory(cellData -> cellData.getValue().subPositionProperty().asObject());
         textColumn.setCellValueFactory(cellData -> cellData.getValue().textProperty());
     }
     

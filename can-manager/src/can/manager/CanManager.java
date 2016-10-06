@@ -1,6 +1,6 @@
 package can.manager;
 
-import can.manager.data.CatalogCAN;
+import can.manager.model.CatalogCAN;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.fxml.FXMLLoader;
@@ -57,7 +57,7 @@ public class CanManager {
         else
             fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";
         
-        CatalogCAN data = new CatalogCAN(fileName);
+        CatalogCAN data = new CatalogCAN(fileName);    
         
    }
 }
