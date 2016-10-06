@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package can.manager.view;
 
-import can.manager.MainApp;
-import can.manager.model.Article;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import can.manager.MainApp;
+import can.manager.model.Article;
 
-public class CatalogViewerController  {
-
+public class CatalogViewerController {
     @FXML
     private TableView<Article> articleTable;
     @FXML
@@ -24,10 +18,11 @@ public class CatalogViewerController  {
     
     private MainApp mainApp;
     
-    public CatalogViewerController(){
+    public CatalogViewerController() {
     }
     
-    private void initilaize(){
+    @FXML
+    private void initialize() {
         numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
         subNumberColumn.setCellValueFactory(cellData -> cellData.getValue().subNumberProperty().asObject());
         textColumn.setCellValueFactory(cellData -> cellData.getValue().textProperty());
@@ -36,5 +31,5 @@ public class CatalogViewerController  {
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
         articleTable.setItems(mainApp.getArticleData());
-    }   
+    }
 }

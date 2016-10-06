@@ -17,7 +17,7 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private ObservableList<Article> articleData = FXCollections.observableArrayList();
+    private final ObservableList<Article> articleData = FXCollections.observableArrayList();
 
     public MainApp(){
         articleData.add(new Article(900, 100, "test"));
