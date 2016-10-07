@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -19,28 +20,20 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private final ObservableList<Article> articleData = FXCollections.observableArrayList();
-    private final ObservableList<CatalogCAN> catalogCANData = FXCollections.observableArrayList();
+    private final TreeItem<String> treeCan = new TreeItem<String> ("root");
     private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";;
+    private final CatalogCAN can = new CatalogCAN(fileName);    
     
-    public MainApp() throws SQLException{
-        CatalogCAN can = new CatalogCAN(fileName);
-        
-        /*for(int i=0; i<catalogCANData.size(); i++) {
-            articleData.add(can.get(i));
-        }*/
-        articleData.add(new Article(0, 900, 100, 0, 0, null, null, 0, 0, "test"));
-
+    public MainApp() throws SQLException {
     }
     
-    public ObservableList<Article> getArticleData(){
-        return articleData;
+    public ObservableList<Article> getAllChapter(){
+        return can.getAllChapter();
     }
     
-    public ObservableList<CatalogCAN> getCANData(){
-        return catalogCANData;
+    public TreeItem<String> getTreeCan(){
+        return can.getTreeCan();
     }
-    
     
     @Override
     public void start(Stage primaryStage) {
@@ -84,13 +77,6 @@ public class MainApp extends Application {
             
             CatalogViewerController controller = loader.getController();
             controller.setMainApp(this);
-            
-            for(int i=0; i<articleData.size(); i++) 
-            {
-                System.out.print(articleData.get(i).getPosition() + " ");
-                System.out.print(articleData.get(i).getSubPosition() + " ");
-                System.out.println(articleData.get(i).getText());
-            }
 
         } catch (IOException e) {
             e.printStackTrace();
