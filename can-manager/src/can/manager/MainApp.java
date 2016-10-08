@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,7 +19,6 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private final TreeItem<String> treeCan = new TreeItem<String> ("root");
     private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";;
     private final CatalogCAN can = new CatalogCAN(fileName);    
     
@@ -28,7 +26,7 @@ public class MainApp extends Application {
     }
     
     public ObservableList<Article> getAllChapter(){
-        return can.getAllChapter();
+        return can.getAllParagraphe();
     }
     
     public TreeItem<String> getTreeCan(){

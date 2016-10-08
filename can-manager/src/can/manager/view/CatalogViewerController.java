@@ -6,6 +6,7 @@ import javafx.scene.control.TableView;
 import can.manager.MainApp;
 import can.manager.model.Article;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
 public class CatalogViewerController {
     @FXML
@@ -18,7 +19,7 @@ public class CatalogViewerController {
     private TableColumn<Article, String> textColumn;
     
     @FXML
-    private TreeItem<String> rootTree;
+    private TreeView<String> rootTree;
     
     private MainApp mainApp;
     
@@ -35,6 +36,6 @@ public class CatalogViewerController {
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
         articleTable.setItems(mainApp.getAllChapter());
-        //rootTree.getChildren().add(mainApp.getTreeCan());
+        rootTree.setRoot(mainApp.getTreeCan());
     }
 }
