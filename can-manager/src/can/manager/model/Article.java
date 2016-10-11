@@ -129,5 +129,10 @@ public class Article {
     }        
     public StringProperty textProperty(){
         return text;
-    }        
+    }  
+    
+    @Override
+    public String toString() {
+        return this.getPosition() + " - " + this.getText();
+    }
 }
