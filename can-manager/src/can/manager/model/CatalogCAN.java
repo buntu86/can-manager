@@ -137,21 +137,22 @@ public class CatalogCAN {
         return article;
     }
     
-    public TreeItem<String> getTreeCan()
+    public TreeItem<Article> getTreeCan()
     {
-        TreeItem<String> treeCan = new TreeItem<> ("CAN");
+        TreeItem<Article> treeCan = new TreeItem<> ();
         treeCan.setExpanded(true);
         
         for(Article artLev01 : getAllParagraphe())
         {
-            TreeItem<String> paragraphe = new TreeItem<> (artLev01.getPosition() + " " + artLev01.getText());
+            TreeItem<Article> paragraphe = new TreeItem<> (artLev01);
+            
             
             for(Article artLev02 : getSousParagraphe(artLev01.getPosition()))
             {
-                TreeItem<String> sousParagraphe = new TreeItem<> (artLev02.getPosition() + " " + artLev02.getText());
+                TreeItem<Article> sousParagraphe = new TreeItem<> (artLev02);
                 for(Article artLev03 : getArticle(artLev02.getPosition()))
                 {
-                    TreeItem<String> article = new TreeItem<> (artLev03.getPosition() + " " + artLev03.getText());
+                    TreeItem<Article> article = new TreeItem<> (artLev03);
                     sousParagraphe.getChildren().add(article);
                 }
 

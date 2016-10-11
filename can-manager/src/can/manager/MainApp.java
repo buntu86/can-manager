@@ -29,7 +29,7 @@ public class MainApp extends Application {
         return can.getAllParagraphe();
     }
     
-    public TreeItem<String> getTreeCan(){
+    public TreeItem<Article> getTreeCan(){
         return can.getTreeCan();
     }
     
