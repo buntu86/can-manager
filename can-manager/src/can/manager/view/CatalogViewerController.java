@@ -5,9 +5,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import can.manager.MainApp;
 import can.manager.model.Article;
+import java.io.File;
 import javafx.scene.control.Label;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.stage.FileChooser;
 
 public class CatalogViewerController {
     @FXML
@@ -19,9 +20,12 @@ public class CatalogViewerController {
     @FXML
     private TableColumn<Article, String> textColumn;
     @FXML
-    private Label position;
+    private Label paragrapheLabel;
     @FXML
-    private Label subPosition;
+    private Label sousParagrapheLabel;
+    @FXML
+    private Label articleLabel;    
+
     
     @FXML
     private TreeView<Article> rootTree;
@@ -33,9 +37,13 @@ public class CatalogViewerController {
     
     @FXML
     private void initialize() {
-        showArticlesDetails(null);
-        rootTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showArticlesDetails(newValue));
-        rootTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println(newValue.getValue().getID()));
+        rootTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showArticlesDetails(newValue.getValue()));
+        numberColumn.setCellValueFactory(cellData -> cellData.getValue().positionProperty().asObject());
+        subNumberColumn.setCellValueFactory(cellData -> cellData.getValue().subPositionProperty().asObject());
+        textColumn.setCellValueFactory(cellData -> cellData.getValue().textProperty());
+        paragrapheLabel.setText("");
+        sousParagrapheLabel.setText("");
+        articleLabel.setText("");
     }
     
     public void setMainApp(MainApp mainApp){
@@ -44,14 +52,30 @@ public class CatalogViewerController {
         rootTree.setShowRoot(false);
     }
     
-    private void showArticlesDetails(TreeItem article) {
+    private void showArticlesDetails(Article article) {
         if(article != null){
-            position.setText(String.valueOf(article.getValue()));
-            //subPosition.setText(String.valueOf(article.getPosition()));
-        }
+            paragrapheLabel.setText(mainApp.getTitleParagraphe(article));
+            
+            if((article.getPosition()/10)%10>0)
+                sousParagrapheLabel.setText(mainApp.getTitleSousParagraphe(article));
+            else
+                sousParagrapheLabel.setText("");
+
+            if(article.getPosition()%10>0)
+            {    
+                articleTable.setItems(mainApp.getArticleFromSubPosition(article));
+                articleLabel.setText(mainApp.getTitleArticle(article));
+            }
+            else
+            {
+                articleTable.setItems(null);
+                articleLabel.setText("");
+            }
+        }     
         else{
-            position.setText("");
-            subPosition.setText("");
+            paragrapheLabel.setText("");
+            sousParagrapheLabel.setText("");
+            articleLabel.setText("");
         }
     }
 }

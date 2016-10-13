@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,8 +20,9 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";;
-    private final CatalogCAN can = new CatalogCAN(fileName);    
+    private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";
+    private final CatalogCAN can = new CatalogCAN(fileName);  
+    private ObservableList<Article> articleFromSubPosition = FXCollections.observableArrayList();
     
     public MainApp() throws SQLException {
     }
@@ -28,9 +30,25 @@ public class MainApp extends Application {
     public ObservableList<Article> getAllChapter(){
         return can.getAllParagraphe();
     }
+
+    public ObservableList<Article> getArticleFromSubPosition(Article article){
+        return can.getSubPositionFromPosition(article);
+    }
     
     public TreeItem<Article> getTreeCan(){
         return can.getTreeCan();
+    }
+    
+    public String getTitleParagraphe(Article article){
+        return can.getTitleParagraphe(article);
+    }
+
+    public String getTitleSousParagraphe(Article article){
+        return can.getTitleSousParagraphe(article);
+    }
+
+    public String getTitleArticle(Article article){
+        return can.getTitleArticle(article);
     }
     
     @Override
@@ -90,7 +108,6 @@ public class MainApp extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
-        
+        launch(args);       
     }
 }

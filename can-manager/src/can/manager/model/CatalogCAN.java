@@ -21,6 +21,73 @@ public class CatalogCAN {
         connect();
     }
     
+    public String getTitleParagraphe(Article article){
+        int paragraphe = (article.getPosition()/100) * 100;
+        return getTitle(paragraphe);
+    }
+
+    public String getTitleSousParagraphe(Article article){
+        int sousParagraphe = (article.getPosition()/10) * 10;
+        return getTitle(sousParagraphe);
+    }    
+
+    public String getTitleArticle(Article article){
+        int articleTitle = article.getPosition();
+        return getTitle(articleTitle);
+    }    
+    
+    public String getTitle(int position){
+        String title = new String();
+        String sql = "SELECT * FROM CAN WHERE position=" + position;
+        int lastLine=0;
+        
+        try{
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+
+                while(rs.next() && !rs.getString("text").startsWith("-----") && rs.getInt("line")>lastLine)
+                {
+                    String text = rs.getString("text").replaceAll("\\s+$", "");
+
+                    if(title.length()>0)
+                    {
+                        if(title.substring(title.length()-1).equals("-"))
+                            title=title.replaceAll("-+$", "");
+                        else
+                            title=title + " ";
+                    }
+
+                    title = title+text;
+                    lastLine = rs.getInt("line");
+                }
+
+                title = rs.getInt("position") + " - " + title;
+            } 
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }        
+        return title;        
+    }
+    
+    public ObservableList<Article> getSubPositionFromPosition(Article article){
+        ObservableList<Article> subPositionsFromPosition = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM CAN WHERE position=" + article.getPosition();
+        try(
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)){
+            
+            while(rs.next()){
+                Article articleTmp = new Article(rs.getInt("ID"), rs.getInt("position"), rs.getInt("subPosition"), rs.getInt("variable"), rs.getInt("line"), rs.getString("alt"), rs.getString("unit"), rs.getInt("publication"), rs.getInt("begin"), rs.getString("text"));
+                subPositionsFromPosition.add(articleTmp);
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        
+        return subPositionsFromPosition;        
+    }
+    
     public ObservableList<Article> getAllParagraphe()
     {
         ObservableList<Article> articlesAllParagraphe = FXCollections.observableArrayList();;
@@ -185,22 +252,3 @@ public class CatalogCAN {
         }        
     }    
 }
-
-
-/*    public void getDescribChapter(int chapter)
-    {
-        String sql = "SELECT * FROM CAN WHERE position=" + chapter;
-        
-        try(
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql)){
-            
-            while(rs.next()){
-                System.out.println(rs.getInt("position") + "\t" + rs.getInt("subPosition") + "\t"+ rs.getString("text"));
-
-            }
-        }
-        catch(SQLException e){
-            System.out.println(e.getMessage());
-        }        
-    }*/
