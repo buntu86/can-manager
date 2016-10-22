@@ -5,10 +5,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import can.manager.MainApp;
 import can.manager.model.Article;
-import java.io.File;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeView;
-import javafx.stage.FileChooser;
 
 public class CatalogViewerController {
     @FXML
@@ -48,23 +46,26 @@ public class CatalogViewerController {
     
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
-        rootTree.setRoot(mainApp.getTreeCan());
+    }
+    
+    public void openCatalogViewer(){
+        rootTree.setRoot(mainApp.getCatalogCAN().getTreeCan());
         rootTree.setShowRoot(false);
     }
     
     private void showArticlesDetails(Article article) {
         if(article != null){
-            paragrapheLabel.setText(mainApp.getTitleParagraphe(article));
+            paragrapheLabel.setText(mainApp.getCatalogCAN().getTitleParagraphe(article));
             
             if((article.getPosition()/10)%10>0)
-                sousParagrapheLabel.setText(mainApp.getTitleSousParagraphe(article));
+                sousParagrapheLabel.setText(mainApp.getCatalogCAN().getTitleSousParagraphe(article));
             else
                 sousParagrapheLabel.setText("");
 
             if(article.getPosition()%10>0)
             {    
-                articleTable.setItems(mainApp.getArticleFromSubPosition(article));
-                articleLabel.setText(mainApp.getTitleArticle(article));
+                articleTable.setItems(mainApp.getCatalogCAN().getSubPositionFromPosition(article));
+                articleLabel.setText(mainApp.getCatalogCAN().getTitleArticle(article));
             }
             else
             {
@@ -77,5 +78,11 @@ public class CatalogViewerController {
             sousParagrapheLabel.setText("");
             articleLabel.setText("");
         }
+    }
+    
+    @FXML
+    private void handleClose() {
+        mainApp.closeCatalogViewer();
+        System.out.println("close");
     }
 }

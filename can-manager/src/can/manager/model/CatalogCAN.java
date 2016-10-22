@@ -1,5 +1,6 @@
 package can.manager.model;
 
+import can.manager.MainApp;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -12,14 +13,46 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
 public class CatalogCAN {
-    
-    private final String fileName;
     private Connection conn = null;
+    private MainApp mainApp;
+    private String fileName;
     
-    public CatalogCAN(String fileName) throws SQLException{
-        this.fileName = fileName;
+    public CatalogCAN() throws SQLException{
+        setFileName(System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can2.db");
+    }
+
+    public void initialize(){
         connect();
     }
+    
+    public void initialize(String fileName){
+        setFileName(fileName);       
+        connect();
+    }
+
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
+    }        
+    
+    private boolean connect()
+    {
+        if(Files.exists(Paths.get(fileName))) {
+            System.out.println("[ V ] File can.db exist");
+
+            try {
+                this.conn = DriverManager.getConnection("jdbc:sqlite:" + fileName);
+                System.out.println("[ V ] Connection to file " + fileName);
+                return true;
+            } catch (SQLException e) {
+                System.out.println("[ X ] " + e.getMessage());
+                return false;
+            }
+        }
+        else {
+            System.out.println("[ X ] File can.db don't exist");
+            return false;
+        }        
+    }      
     
     public String getTitleParagraphe(Article article){
         int paragraphe = (article.getPosition()/100) * 100;
@@ -38,6 +71,7 @@ public class CatalogCAN {
     
     public String getTitle(int position){
         String title = new String();
+        String add = new String();
         String sql = "SELECT * FROM CAN WHERE position=" + position;
         int lastLine=0;
         
@@ -60,8 +94,14 @@ public class CatalogCAN {
                     title = title+text;
                     lastLine = rs.getInt("line");
                 }
-
-                title = rs.getInt("position") + " - " + title;
+                
+                if(rs.getInt("position")<100)
+                    if(rs.getInt("position")<10)
+                        add = "00";
+                    else
+                        add = "0";
+                
+                title = add + rs.getInt("position") + " - " + title;
             } 
         catch(SQLException e){
             System.out.println(e.getMessage());
@@ -231,24 +271,10 @@ public class CatalogCAN {
 
         return treeCan;
     }
-    
-    private boolean connect()
-    {
-        if(Files.exists(Paths.get(fileName))) {
-            System.out.println("[ V ] File can.db exist");
 
-            try {
-                this.conn = DriverManager.getConnection("jdbc:sqlite:" + fileName);
-                System.out.println("[ V ] Connection to file can.db");
-                return true;
-            } catch (SQLException e) {
-                System.out.println("[ X ] " + e.getMessage());
-                return false;
-            }
-        }
-        else {
-            System.out.println("[ X ] File can.db don't exist");
-            return false;
-        }        
-    }    
+    private void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+    
+    
 }

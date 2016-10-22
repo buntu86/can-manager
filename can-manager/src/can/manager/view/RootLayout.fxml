@@ -13,14 +13,14 @@
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handelOpen" text="Ouvrir" />
-                  <MenuItem mnemonicParsing="false" text="Fermer" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Fermer" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Quitter" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Convertir">
             <items>
-              <MenuItem mnemonicParsing="false" text="Exporter *.dbf -&gt; *.sql" />
+              <MenuItem mnemonicParsing="false" onAction="#handelConvert" text="Exporter *.dbf -&gt; *.sql" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="?">

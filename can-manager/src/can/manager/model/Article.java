@@ -133,6 +133,13 @@ public class Article {
     
     @Override
     public String toString() {
-        return this.getPosition() + " - " + this.getText();
+        String add = new String();
+        
+        if(this.getPosition()<100)
+            if(this.getPosition()<10)
+                add = "00";
+            else
+                add = "0";
+        return add + this.getPosition() + " - " + this.getText();
     }
 }

@@ -33,7 +33,6 @@ public class CanManager {
     
     public static void main(String[] args) throws SQLException, IOException, InterruptedException{
         
-        String fileName;
         
         /*
         --- USE exportDBFtoSQLite ---
@@ -52,12 +51,7 @@ public class CanManager {
 
         //--- USE querySQL ---
         
-        if(args.length > 0)
-            fileName = args[0];
-        else
-            fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can.db";
-        
-        CatalogCAN data = new CatalogCAN(fileName);    
+        CatalogCAN data = new CatalogCAN();    
         
    }
 }

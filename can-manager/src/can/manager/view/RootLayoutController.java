@@ -1,45 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package can.manager.view;
 
+import can.manager.MainApp;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
-/**
- * FXML Controller class
- *
- * @author Adrien
- */
+
 public class RootLayoutController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    private MainApp mainApp;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    public void setMainApp(MainApp mainApp){
+        this.mainApp = mainApp;
+    }    
     
     @FXML
     private void handelOpen() {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
+
+        String directoryName = new String(System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "canManager");
         
-        if(selectedFile != null)
-            System.out.println("Fichier selectionné : " + selectedFile.getName());
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new ExtensionFilter("CAN sql", "*.db")
+        );
+        
+        File directory = new File(directoryName);
+        if(directory.exists())
+            fileChooser.setInitialDirectory(directory);
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if(selectedFile != null && Files.exists(Paths.get(selectedFile.getPath())))
+        {   
+            mainApp.openCatalogViewer(selectedFile.getPath());
+            System.out.println("Fichier selectionné : " + selectedFile.getPath());
+        }   
         
         else
             System.out.println("Selection du fichier annulé");
     } 
+    
+    @FXML
+    private void handelConvert() throws IOException {
+        mainApp.showConvertDialog();
+    }
 
     @FXML
     private void handleAproposDe() {
@@ -55,5 +71,9 @@ public class RootLayoutController implements Initializable {
     private void handleExit(){
         System.exit(0);
     }
-    
+
+    @FXML
+    private void handleClose(){
+        mainApp.closeCatalogViewer();
+    }
 }

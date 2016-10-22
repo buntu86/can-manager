@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,31 +12,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.List;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
-/**
- *
- * @author Adrien Pillonel
- */
 public class ExportDBFtoSQLite {
     
     private Path path_DBFfile;
     private String fileName;
     private Connection conn = null;  
-    
-    //Path pathFileDBF = Paths.get(getPath());  
 
-    ExportDBFtoSQLite(String pathString) throws IOException, InterruptedException, SQLException{
-
-        path_DBFfile = Paths.get(pathString);
-
-        if(checkPathDBF() && connect() && createNewTable())
+    public ExportDBFtoSQLite(Path crbFilePath, Path sqlFilePath) throws IOException, InterruptedException, SQLException{
+        checkPathCRB(crbFilePath);
+        
+        /*        if(checkPathDBF(crbFilePath) && connect(sqlFilePath) && createNewTable())
         {
             addArticlesOnTable();        
-        }
+        }*/
     }
 
+
     //Valid if the file exist AND the extension is correct
-    private boolean checkPathDBF() throws IOException {
+    private boolean checkPathDBF(Path crbFilePath) throws IOException {
+        System.out.println(path_DBFfile.toString());
+        
         if(Files.exists(path_DBFfile)) {
             String nameFile = path_DBFfile.getFileName().toString();
             String extensionFile = nameFile.substring(nameFile.lastIndexOf('.')+1);
@@ -56,42 +53,37 @@ public class ExportDBFtoSQLite {
         }
         
         else {
-            System.out.println("[ X ] File DBF not fund...");
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("File DBF not found");
+            alert.setHeaderText(null);
+            alert.setContentText("File DBF not found.");
+
+            alert.showAndWait();
             return false;       
         }
     }
     
     //SQL connexion
     //Creating file .db + connection sql
-    private boolean connect()
+    private boolean connect(Path sqlFilePath)
     {
-        String folderDbFile = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator");
-        String dbFile = folderDbFile + fileName + (".db");
+        if(!Files.exists(sqlFilePath)) {
+            System.out.println("[ V ] OK creating file .db");
 
-        if(Files.isDirectory(Paths.get(folderDbFile)) && Files.isWritable(Paths.get(folderDbFile)))
-        {
-            if(!Files.exists(Paths.get(dbFile))) {
-                System.out.println("[ V ] OK creating file .db");
-
-                try {
-                    this.conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-                    System.out.println("[ V ] Creation AND connection to file ./user/Desktop/" + fileName + ".db");
-                    return true;
-                } catch (SQLException e) {
-                    System.out.println("[ X ] " + e.getMessage());
-                    return false;
-                }
-            }
-
-            else {
-                System.out.println("[ X ] File .db alreally exist");
+            try {
+                this.conn = DriverManager.getConnection("jdbc:sqlite:" + sqlFilePath);
+                System.out.println("[ V ] Creation AND connection to file ./user/Desktop/" + fileName + ".db");
+                return true;
+            } catch (SQLException e) {
+                System.out.println("[ X ] " + e.getMessage());
                 return false;
-            }        
+            }
         }
+
         else {
-                System.out.println("[ X ] Folder " + folderDbFile + " is not writable or is don't exit...");
-                return false;        
-        }
+            System.out.println("[ X ] File .db alreally exist");
+            return false;
+        }        
     }    
     
     //Creating table CAN
@@ -169,5 +161,25 @@ public class ExportDBFtoSQLite {
         }
         stat.executeUpdate("COMMIT;");
         System.out.println("[ V ] Table CAN is populated");   
+    }
+
+    private boolean checkPathCRB(Path crbFilePath) throws IOException {
+        if(Files.exists(crbFilePath)) {
+            String nameFile = crbFilePath.getFileName().toString();
+            String extensionFile = nameFile.substring(nameFile.lastIndexOf('.')+1);
+
+            if(extensionFile.toLowerCase().equals("dbf")) {
+                Long sizeFile = Files.size(crbFilePath);
+                System.out.println("[ V ] File DBF exist, name file \"" + this.fileName + "\", extension \"" + extensionFile.toLowerCase() +", size file " + sizeFile + "byte");
+                return true;
+            }
+            
+            else {
+                System.out.println("[ X ] File is not DBF...");
+                return false;
+            }
+        }
+        
+        return false;
     }
 }
