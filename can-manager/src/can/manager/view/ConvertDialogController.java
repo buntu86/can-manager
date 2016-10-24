@@ -50,7 +50,7 @@ public class ConvertDialogController {
     
     @FXML
     private void handleConvert() throws IOException, InterruptedException, SQLException {
-        ExportDBFtoSQLite run = new ExportDBFtoSQLite(crbFilePath, sqlFilePath);
+        ExportDBFtoSQLite run = new ExportDBFtoSQLite(crbFile.getText(), sqlFile.getText(), this.dialogStage);
     }
     
     @FXML
@@ -100,12 +100,11 @@ public class ConvertDialogController {
 
         if(selectedFile != null)
         {   
-            this.setCrbFile(selectedFile.getPath());
+            this.setSqlFile(selectedFile.getPath());
             System.out.println("Fichier selectionné : " + selectedFile.getPath());
         }   
         
         else
             System.out.println("Selection du fichier annulé");
-    }
-    
+    }   
 }

@@ -15,6 +15,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -92,7 +94,7 @@ public class MainApp extends Application {
         }
     }
     
-    public void showConvertDialog() throws IOException {
+    public void showConvertDialog() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/ConvertDialog.fxml"));
@@ -108,6 +110,11 @@ public class MainApp extends Application {
             ConvertDialogController controller = loader.getController();
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
+            
+            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if(event.getCode().equals(KeyCode.ESCAPE))
+                    dialogStage.close();
+            });
             
             dialogStage.showAndWait();
             

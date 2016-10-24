@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,80 +15,106 @@ import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 
 public class ExportDBFtoSQLite {
     
-    private Path path_DBFfile;
-    private String fileName;
+    private String fileName, crbFile, sqlFile;
+    private final Path crbFilePath, sqlFilePath;
     private Connection conn = null;  
+    private Stage dialogStage;
 
-    public ExportDBFtoSQLite(Path crbFilePath, Path sqlFilePath) throws IOException, InterruptedException, SQLException{
-        checkPathCRB(crbFilePath);
+    public ExportDBFtoSQLite(String crbFile, String sqlFile, Stage dialogStage) {
+        crbFilePath = Paths.get(crbFile);
+        sqlFilePath = Paths.get(sqlFile);
+        this.crbFile = crbFile;
+        this.sqlFile = sqlFile;
+        this.dialogStage = dialogStage;
         
-        /*        if(checkPathDBF(crbFilePath) && connect(sqlFilePath) && createNewTable())
-        {
-            addArticlesOnTable();        
-        }*/
-    }
-
-
-    //Valid if the file exist AND the extension is correct
-    private boolean checkPathDBF(Path crbFilePath) throws IOException {
-        System.out.println(path_DBFfile.toString());
-        
-        if(Files.exists(path_DBFfile)) {
-            String nameFile = path_DBFfile.getFileName().toString();
-            String extensionFile = nameFile.substring(nameFile.lastIndexOf('.')+1);
-            this.fileName = nameFile.substring(0, nameFile.lastIndexOf('.'));
-
-            if(extensionFile.toLowerCase().equals("dbf")) {
-                Long sizeFile = Files.size(path_DBFfile);
-                System.out.println("[ V ] File DBF exist, name file \"" + this.fileName + "\", extension \"" + extensionFile.toLowerCase() +", size file " + sizeFile + "byte");
-                return true;
-            }
-            
-            else {
-                System.out.println("[ X ] File is not DBF...");
-                return false;                           
-            }
-        }
-        
-        else {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("File DBF not found");
-            alert.setHeaderText(null);
-            alert.setContentText("File DBF not found.");
-
-            alert.showAndWait();
-            return false;       
-        }
+        if(checkPathCRB())
+            if(connect())
+                if(createNewTable())
+                    addArticlesOnTable();
     }
     
+    private boolean checkPathCRB() {   
+        
+        try{
+            if(Files.exists(crbFilePath)) {
+                String nameFile = crbFilePath.getFileName().toString();
+                String extensionFile = nameFile.substring(nameFile.lastIndexOf('.')+1);
+                this.fileName =  nameFile.substring(0, nameFile.lastIndexOf('.'));
+                Long sizeFile = Files.size(crbFilePath);
+                System.out.println("[ V ] File DBF exist, name file \"" + this.fileName + "\", extension \"" + extensionFile.toLowerCase() + ", size file " + sizeFile + "byte");
+
+                if(extensionFile.toLowerCase().equals("dbf")) {
+                    return true;
+                }
+
+                else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Convertir");
+                    alert.setHeaderText(null);
+                    alert.setContentText(crbFile + "\nLe fichier n'est pas de type *.dbf\nChoisissez un fichier de type *.dbf");
+                    alert.showAndWait();
+                }
+            }
+
+            else {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(crbFile + "\nFichier introuvable.\nVérifiez le nom du fichier et réessayer.");
+                alert.showAndWait();
+            }
+
+            return false;
+        } catch (IOException e) {
+            System.out.println("[ X ] " + e.getMessage());
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Convertir");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage() + "\nErreur de fichier.\nVeuillez choisir un autre nom de fichier et réessayer.");
+            alert.showAndWait();
+        }    
+        return false;
+    }
+
     //SQL connexion
     //Creating file .db + connection sql
-    private boolean connect(Path sqlFilePath)
+    private boolean connect()
     {
         if(!Files.exists(sqlFilePath)) {
-            System.out.println("[ V ] OK creating file .db");
+            System.out.println("[ V ] File sql not exist");
 
             try {
                 this.conn = DriverManager.getConnection("jdbc:sqlite:" + sqlFilePath);
-                System.out.println("[ V ] Creation AND connection to file ./user/Desktop/" + fileName + ".db");
+                System.out.println("[ V ] Creation AND connection to file " + this.sqlFilePath);
                 return true;
             } catch (SQLException e) {
                 System.out.println("[ X ] " + e.getMessage());
-                return false;
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage() + "\nErreur de type SQL.\nVeuillez choisir un autre nom de fichier et réessayer.");
+                alert.showAndWait();
             }
         }
 
         else {
             System.out.println("[ X ] File .db alreally exist");
-            return false;
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Convertir");
+            alert.setHeaderText(null);
+            alert.setContentText(sqlFile + "\nFichier sql déjà existant.\nVeuillez choisir un autre nom de fichier et réessayer.");
+            alert.showAndWait();
         }        
-    }    
+        
+        return false;
+    }   
     
-    //Creating table CAN
-    private boolean createNewTable() throws IOException, InterruptedException{
+
+    private boolean createNewTable() {
         String sql = "CREATE TABLE IF NOT EXISTS 'CAN' (\n"
             + "`ID` INTEGER PRIMARY KEY AUTOINCREMENT,\n"
             + "`position`	INTEGER,\n"
@@ -107,79 +134,89 @@ public class ExportDBFtoSQLite {
             return true;
 
             } catch (SQLException e) {
-        System.out.println("[ X ] " + e.getMessage());
-        return false;
+                System.out.println("[ X ] " + e.getMessage());
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage() + "\nErreur de type SQL.\nVeuillez choisir un autre nom de fichier et réessayer.");
+                alert.showAndWait();
         }   
+        return false;
     }
-
-    private void addArticlesOnTable() throws IOException, SQLException {
+    
+    private void addArticlesOnTable() {
         Charset stringCharset = Charset.forName("IBM437");
 
-        BufferedReader in = Files.newBufferedReader(path_DBFfile, stringCharset);
-        String line1=null;
-        String line2=null;                       
-        int nbrChar=78;
-        
-        line1=in.readLine();
-        line2=in.readLine();
+        try {
+            BufferedReader in = Files.newBufferedReader(crbFilePath, stringCharset);
+            String line1=null;
+            String line2=null;                       
+            int nbrChar=78;
 
-        List<String> liste = java.util.Arrays.asList(line2.split("(?<=\\G.{"+nbrChar+"})"));    
+            line1=in.readLine();
+            line2=in.readLine();
 
-        Iterator<String> iterator = liste.iterator(); 
+            List<String> liste = java.util.Arrays.asList(line2.split("(?<=\\G.{"+nbrChar+"})"));    
 
-        Statement stat = conn.createStatement();
-        stat.executeUpdate("BEGIN;");
+            Iterator<String> iterator = liste.iterator(); 
 
-        while (iterator.hasNext()) {
-            String nodes = iterator.next();
-            if(nodes.length()==78)
-            {
-                String sqlInsertInto = ("INSERT INTO CAN (position,subPosition,variable,line,alt,unit,publication,begin,text) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                PreparedStatement stmtPrepared = conn.prepareStatement(sqlInsertInto);                
-                String position = new String(nodes.toCharArray(), 1, 3);
-                String subPosition = new String(nodes.toCharArray(), 4, 2);
-                String variable = new String(nodes.toCharArray(), 7, 2);
-                String line = new String(nodes.toCharArray(), 9, 2);
-                String alt = new String(nodes.toCharArray(), 11, 1);
-                String unit = new String(nodes.toCharArray(), 12, 2);
-                String publication = new String(nodes.toCharArray(), 14, 2);
-                String begin = new String(nodes.toCharArray(), 16, 2);
-                String text = new String(nodes.toCharArray(), 18, 60);                        
+            try {
+                Statement stat = conn.createStatement();
+                stat.executeUpdate("BEGIN;");
 
-                stmtPrepared.setString(1, position);
-                stmtPrepared.setString(2, subPosition);
-                stmtPrepared.setString(3, variable);
-                stmtPrepared.setString(4, line);
-                stmtPrepared.setString(5, alt);
-                stmtPrepared.setString(6, unit);
-                stmtPrepared.setString(7, publication);
-                stmtPrepared.setString(8, begin);
-                stmtPrepared.setString(9, text);
+                while (iterator.hasNext()) {
+                    String nodes = iterator.next();
+                    if(nodes.length()==78)
+                    {
+                        String sqlInsertInto = ("INSERT INTO CAN (position,subPosition,variable,line,alt,unit,publication,begin,text) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        PreparedStatement stmtPrepared = conn.prepareStatement(sqlInsertInto);                
+                        String position = new String(nodes.toCharArray(), 1, 3);
+                        String subPosition = new String(nodes.toCharArray(), 4, 2);
+                        String variable = new String(nodes.toCharArray(), 7, 2);
+                        String line = new String(nodes.toCharArray(), 9, 2);
+                        String alt = new String(nodes.toCharArray(), 11, 1);
+                        String unit = new String(nodes.toCharArray(), 12, 2);
+                        String publication = new String(nodes.toCharArray(), 14, 2);
+                        String begin = new String(nodes.toCharArray(), 16, 2);
+                        String text = new String(nodes.toCharArray(), 18, 60);                        
 
-                stmtPrepared.executeUpdate();                
+                        stmtPrepared.setString(1, position);
+                        stmtPrepared.setString(2, subPosition);
+                        stmtPrepared.setString(3, variable);
+                        stmtPrepared.setString(4, line);
+                        stmtPrepared.setString(5, alt);
+                        stmtPrepared.setString(6, unit);
+                        stmtPrepared.setString(7, publication);
+                        stmtPrepared.setString(8, begin);
+                        stmtPrepared.setString(9, text);
+
+                        stmtPrepared.executeUpdate();                
+                    }
+                }
+                stat.executeUpdate("COMMIT;");
+                System.out.println("[ V ] Table CAN is populated");
+       
+                dialogStage.close();
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText("Le fichier a été converti avec succès.");
+                alert.showAndWait();                
+            } catch(SQLException e){
+                System.out.println("[ X ] " + e.getMessage());
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage() + "\nErreur de type SQL.\nVeuillez choisir un autre nom de fichier et réessayer.");
+                alert.showAndWait();
             }
+        } catch(IOException e){
+            System.out.println("[ X ] " + e.getMessage());
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Convertir");
+            alert.setHeaderText(null);
+            alert.setContentText(crbFilePath.toString() + "\nErreur lors de l'ouverture du fichier\nVeuillez choisir un autre nom de fichier et réessayer.\nErreur : " + e.getMessage());
+            alert.showAndWait();
         }
-        stat.executeUpdate("COMMIT;");
-        System.out.println("[ V ] Table CAN is populated");   
-    }
-
-    private boolean checkPathCRB(Path crbFilePath) throws IOException {
-        if(Files.exists(crbFilePath)) {
-            String nameFile = crbFilePath.getFileName().toString();
-            String extensionFile = nameFile.substring(nameFile.lastIndexOf('.')+1);
-
-            if(extensionFile.toLowerCase().equals("dbf")) {
-                Long sizeFile = Files.size(crbFilePath);
-                System.out.println("[ V ] File DBF exist, name file \"" + this.fileName + "\", extension \"" + extensionFile.toLowerCase() +", size file " + sizeFile + "byte");
-                return true;
-            }
-            
-            else {
-                System.out.println("[ X ] File is not DBF...");
-                return false;
-            }
-        }
-        
-        return false;
     }
 }
