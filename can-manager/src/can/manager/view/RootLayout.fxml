@@ -6,18 +6,29 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="can.manager.view.RootLayoutController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="can.manager.view.RootLayoutController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handelOpen" text="Ouvrir" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Fermer" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Quitter" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Catalogue">
+              <items>
+              <MenuItem mnemonicParsing="false" onAction="#handelOpen" text="Ouvrir catalogue" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Fermer catalogue" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Soumission">
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handelImportSia451" text="Importer soumission" />
+                  <MenuItem mnemonicParsing="false" onAction="#handelOpenSoumission" text="Ouvrir soumission" />
+                <MenuItem mnemonicParsing="false" text="Fermer soumission" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Convertir">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handelConvert" text="Exporter *.dbf -&gt; *.sql" />

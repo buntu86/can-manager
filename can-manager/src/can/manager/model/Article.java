@@ -7,16 +7,16 @@ import javafx.beans.property.StringProperty;
 
 public class Article {
 
-    private final IntegerProperty ID;
-    private final IntegerProperty position;
-    private final IntegerProperty subPosition;
-    private final IntegerProperty variable;
-    private final IntegerProperty line;
-    private final StringProperty alt;
-    private final StringProperty unit;
-    private final IntegerProperty publication;
-    private final IntegerProperty begin;
-    private final StringProperty text;
+    private IntegerProperty ID;
+    private IntegerProperty position;
+    private IntegerProperty subPosition;
+    private IntegerProperty variable;
+    private IntegerProperty line;
+    private StringProperty alt;
+    private StringProperty unit;
+    private IntegerProperty publication;
+    private IntegerProperty begin;
+    private StringProperty text;
 
     public Article() {
         this(0, 0, 0, 0, 0, null, null, 0, 0, null);
@@ -98,6 +98,18 @@ public class Article {
     public void setText(String text){
         this.text.set(text);
     }
+    public void setArticle(int ID, int position, int subPosition, int variable, int line, String alt, String unit, int publication, int begin, String text){
+        this.ID = new SimpleIntegerProperty(ID);
+        this.position = new SimpleIntegerProperty(position);
+        this.subPosition = new SimpleIntegerProperty(subPosition);
+        this.variable = new SimpleIntegerProperty(variable);
+        this.line = new SimpleIntegerProperty(line);
+        this.alt = new SimpleStringProperty(alt);
+        this.unit = new SimpleStringProperty(unit);
+        this.publication = new SimpleIntegerProperty(publication);
+        this.begin = new SimpleIntegerProperty(begin);
+        this.text = new SimpleStringProperty(text);
+    }    
     
     //PROPERTY
     public IntegerProperty IDProperty(){
@@ -141,5 +153,10 @@ public class Article {
             else
                 add = "0";
         return add + this.getPosition() + " - " + this.getText();
+    }
+    
+    //UPDATE
+    public void updateArticleText(String text){
+        this.text.set(this.getText() + "\n" + text);
     }
 }

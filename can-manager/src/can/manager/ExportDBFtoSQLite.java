@@ -171,7 +171,7 @@ public class ExportDBFtoSQLite {
                         String sqlInsertInto = ("INSERT INTO CAN (position,subPosition,variable,line,alt,unit,publication,begin,text) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                         PreparedStatement stmtPrepared = conn.prepareStatement(sqlInsertInto);                
                         String position = new String(nodes.toCharArray(), 1, 3);
-                        String subPosition = new String(nodes.toCharArray(), 4, 2);
+                        String subPosition = new String(nodes.toCharArray(), 4, 3);
                         String variable = new String(nodes.toCharArray(), 7, 2);
                         String line = new String(nodes.toCharArray(), 9, 2);
                         String alt = new String(nodes.toCharArray(), 11, 1);

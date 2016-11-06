@@ -112,13 +112,23 @@ public class CatalogCAN {
     public ObservableList<Article> getSubPositionFromPosition(Article article){
         ObservableList<Article> subPositionsFromPosition = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CAN WHERE position=" + article.getPosition();
+        Article articleTmp = new Article();
         try(
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql)){
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
             
             while(rs.next()){
-                Article articleTmp = new Article(rs.getInt("ID"), rs.getInt("position"), rs.getInt("subPosition"), rs.getInt("variable"), rs.getInt("line"), rs.getString("alt"), rs.getString("unit"), rs.getInt("publication"), rs.getInt("begin"), rs.getString("text"));
-                subPositionsFromPosition.add(articleTmp);
+                System.out.println(articleTmp.getSubPosition() + " " + rs.getInt("subPosition"));
+                if(rs.getInt("subPosition") == articleTmp.getSubPosition() && rs.getInt("variable") == articleTmp.getVariable())
+                {
+                    articleTmp.updateArticleText(rs.getString("text"));                
+                }
+                else
+                {
+                    articleTmp = new Article();                    
+                    articleTmp.setArticle(rs.getInt("ID"), rs.getInt("position"), rs.getInt("subPosition"), rs.getInt("variable"), rs.getInt("line"), rs.getString("alt"), rs.getString("unit"), rs.getInt("publication"), rs.getInt("begin"), rs.getString("text"));                                    
+                    subPositionsFromPosition.add(articleTmp);                
+                }
             }
         }
         catch(SQLException e){
@@ -253,7 +263,6 @@ public class CatalogCAN {
         {
             TreeItem<Article> paragraphe = new TreeItem<> (artLev01);
             
-            
             for(Article artLev02 : getSousParagraphe(artLev01.getPosition()))
             {
                 TreeItem<Article> sousParagraphe = new TreeItem<> (artLev02);
@@ -275,6 +284,4 @@ public class CatalogCAN {
     private void setFileName(String fileName) {
         this.fileName = fileName;
     }
-    
-    
 }

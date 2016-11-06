@@ -16,7 +16,9 @@ public class CatalogViewerController {
     @FXML
     private TableColumn<Article, Integer> subNumberColumn;
     @FXML
-    private TableColumn<Article, String> textColumn;
+    private TableColumn<Article, Integer> variableColumn;
+    @FXML
+    private TableColumn<Article, String> textColumn;    
     @FXML
     private Label paragrapheLabel;
     @FXML
@@ -38,6 +40,7 @@ public class CatalogViewerController {
         rootTree.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showArticlesDetails(newValue.getValue()));
         numberColumn.setCellValueFactory(cellData -> cellData.getValue().positionProperty().asObject());
         subNumberColumn.setCellValueFactory(cellData -> cellData.getValue().subPositionProperty().asObject());
+        variableColumn.setCellValueFactory(cellData -> cellData.getValue().variableProperty().asObject());
         textColumn.setCellValueFactory(cellData -> cellData.getValue().textProperty());
         paragrapheLabel.setText("");
         sousParagrapheLabel.setText("");

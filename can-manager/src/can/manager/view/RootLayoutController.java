@@ -58,6 +58,17 @@ public class RootLayoutController implements Initializable {
     }
 
     @FXML
+    private void handelImportSia451() throws IOException {
+        mainApp.importSia451();
+    }    
+
+    @FXML
+    private void handelOpenSoumission() throws IOException {
+        mainApp.openSoumissionDialog();
+    }    
+
+    
+    @FXML
     private void handleAproposDe() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Can manager");
