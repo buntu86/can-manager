@@ -17,14 +17,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-public class ExportDBFtoSQLite {
+public class ConvertCRBtoCMC {
     
     private String fileName, crbFile, sqlFile;
     private final Path crbFilePath, sqlFilePath;
     private Connection conn = null;  
     private Stage dialogStage;
 
-    public ExportDBFtoSQLite(String crbFile, String sqlFile, Stage dialogStage) {
+    public ConvertCRBtoCMC(String crbFile, String sqlFile, Stage dialogStage) {
         crbFilePath = Paths.get(crbFile);
         sqlFilePath = Paths.get(sqlFile);
         this.crbFile = crbFile;

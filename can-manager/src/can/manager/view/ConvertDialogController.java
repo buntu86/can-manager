@@ -1,6 +1,6 @@
 package can.manager.view;
 
-import can.manager.ExportDBFtoSQLite;
+import can.manager.ConvertCRBtoCMC;
 import can.manager.MainApp;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class ConvertDialogController {
     
     @FXML
     private void handleConvert() throws IOException, InterruptedException, SQLException {
-        ExportDBFtoSQLite run = new ExportDBFtoSQLite(crbFile.getText(), sqlFile.getText(), this.dialogStage);
+        ConvertCRBtoCMC run = new ConvertCRBtoCMC(crbFile.getText(), sqlFile.getText(), this.dialogStage);
     }
     
     @FXML
@@ -75,7 +75,7 @@ public class ConvertDialogController {
         if(selectedFile != null)
         {   
             this.setCrbFile(selectedFile.getPath());
-            this.setSqlFile(selectedFile.getPath().substring(0, selectedFile.getPath().length()-4) + ".db");
+            this.setSqlFile(selectedFile.getPath().substring(0, selectedFile.getPath().length()-4) + ".cmc");
             
             System.out.println("Fichier selectionné : " + selectedFile.getPath());
         }   
@@ -90,7 +90,7 @@ public class ConvertDialogController {
         
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("SQL .db", "*.db")
+                new FileChooser.ExtensionFilter("CanManagerCatalog .cmc", "*.cmc")
         );
         
         File directory = new File(directoryName);

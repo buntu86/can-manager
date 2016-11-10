@@ -34,7 +34,7 @@ public class RootLayoutController implements Initializable {
         
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
-                new ExtensionFilter("CAN sql", "*.db")
+                new ExtensionFilter("CanManagerCatalog cmc", "*.cmc")
         );
         
         File directory = new File(directoryName);

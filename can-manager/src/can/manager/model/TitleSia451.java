@@ -6,22 +6,21 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import can.manager.data.Config;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public final class TitleSia451 {
     private Connection conn = null;
     private final Path listCatalogCanFile, catalogDirectory;
     private final StringProperty nomCan;
     private final IntegerProperty numCan, yearCan;
-    private final BooleanProperty etatCan;
+    private final Image etatCan;
     
     public TitleSia451(String fromCms){
         Config config = new Config();
@@ -31,7 +30,7 @@ public final class TitleSia451 {
         this.numCan = new SimpleIntegerProperty(Integer.parseInt(fromCms.substring(0, 3)));
         this.yearCan = new SimpleIntegerProperty(Integer.parseInt(fromCms.substring(4, 6)));
         this.nomCan = new SimpleStringProperty(constNomCan());
-        this.etatCan = new SimpleBooleanProperty(constEtatCan());
+        this.etatCan = constEtatCan();
     }
 
     private boolean connect()
@@ -78,7 +77,7 @@ public final class TitleSia451 {
     
     //NOM CAN
     private String constNomCan(){
-        String sql = "SELECT * FROM titles WHERE num=" + this.numCan;
+        String sql = "SELECT * FROM titles WHERE num=" + getNumCan();
         String tempNomCan = null;
         try{
             Statement stmt = conn.createStatement();
@@ -106,8 +105,9 @@ public final class TitleSia451 {
     }
     
     //ETAT CAN
-    private Boolean constEtatCan() {
-        Path cmc = Paths.get(catalogDirectory.toString() + "F" + getNumCan() + getYearCan());
+    /*private Boolean constEtatCan() {
+        Path cmc = Paths.get(catalogDirectory.toString() + System.getProperty("file.separator") + "F" + getNumCan() + getYearCan() + ".cmc");
+        System.out.println(catalogDirectory.toString() + System.getProperty("file.separator") + "F" + getNumCan() + getYearCan() + ".cmc");
         Boolean tempEtatCan = false;
         if(Files.exists(cmc))
             tempEtatCan = true;
@@ -119,8 +119,11 @@ public final class TitleSia451 {
     }
     public Boolean getEtatCan(){
         return this.etatCan.get();
-    }
-    public BooleanProperty etatCanProperty(){
-        return etatCan;
+    }*/
+
+    private Image constEtatCan() {
+        Image img = new Image("can/manager/img/false.png");
+        
+        return img;
     }
 }

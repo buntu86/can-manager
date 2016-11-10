@@ -31,7 +31,7 @@ public final class Config {
     }
 
     public void setListCatalogCanFile() {
-        this.listCatalogCanFile = Paths.get(System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "canManager" + System.getProperty("file.separator") + "config" + System.getProperty("file.separator") + "listCatalogCan.db");
+        this.listCatalogCanFile = Paths.get("resources/listCatalogCan.db");
         if(Files.exists(listCatalogCanFile))
             System.out.println("[ V ] Ok directory canManager/config/listCatalogCanFile.db exist");
         else{
