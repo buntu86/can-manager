@@ -42,8 +42,6 @@ public class OpenSoumissionDialogController {
         tableTitles.setVisible(false);
         etatColumn.setCellValueFactory(new PropertyValueFactory<>("image"));
         etatColumn.setCellFactory(param -> new ImageTableCell<>());
-//http://stackoverflow.com/questions/34896299/javafx-change-tablecell-column-of-selected-tablerow-in-a-tableview        
-//etatColumn.setCellValueFactory(new PropertyValueFactory<>("C:\\Users\\Adrien\\Desktop\\canManager\\false.png"));
         numCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().numCanProperty().asObject());
         yearCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().yearCanProperty().asObject());
         nomCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().nomCanProperty());
@@ -97,22 +95,22 @@ public class OpenSoumissionDialogController {
     private class ImageTableCell<S> extends TableCell<S, Image> {
         final ImageView imageView = new ImageView();
         
-        ImageTableCell() {
+        ImageTableCell(){
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
         
         @Override
-        protected void updateItem(Image item, boolean empty) {
+        protected void updateItem(Image item, boolean empty){
             super.updateItem(item, empty);
             
-            if(empty || item == null){
+            if(empty || item==null){
                 imageView.setImage(null);
                 setText(null);
                 setGraphic(null);
             }
-            
+
             imageView.setImage(item);
-            setGraphic(imageView);            
+            setGraphic(imageView);
         }
     }
 }

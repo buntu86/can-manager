@@ -103,27 +103,13 @@ public final class TitleSia451 {
     public StringProperty nomCanProperty(){
         return nomCan;
     }
-    
-    //ETAT CAN
-    /*private Boolean constEtatCan() {
-        Path cmc = Paths.get(catalogDirectory.toString() + System.getProperty("file.separator") + "F" + getNumCan() + getYearCan() + ".cmc");
-        System.out.println(catalogDirectory.toString() + System.getProperty("file.separator") + "F" + getNumCan() + getYearCan() + ".cmc");
-        Boolean tempEtatCan = false;
-        if(Files.exists(cmc))
-            tempEtatCan = true;
-        
-        return tempEtatCan;
-    }
-    private void setEtatCan(Boolean etatCan) {
-        this.etatCan.set(etatCan);
-    }
-    public Boolean getEtatCan(){
-        return this.etatCan.get();
-    }*/
 
+    //ETAT CAN
     private Image constEtatCan() {
         Image img = new Image("can/manager/img/false.png");
-        
         return img;
+    }
+    public Image etatCanProperty(){
+        return this.etatCan;
     }
 }
