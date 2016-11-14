@@ -1,17 +1,24 @@
 package can.manager.model;
 
+import can.manager.MainApp;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import can.manager.data.Config;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -20,9 +27,10 @@ public final class TitleSia451 {
     private final Path listCatalogCanFile, catalogDirectory;
     private final StringProperty nomCan;
     private final IntegerProperty numCan, yearCan;
-    private final Image etatCan;
+    private final SimpleObjectProperty<ImageView> etatCan;
+    private final SimpleObjectProperty<Button> buttonConvert;
     
-    public TitleSia451(String fromCms){
+    public TitleSia451(String fromCms) /*112 15*/{
         Config config = new Config();
         this.listCatalogCanFile = config.getListCatalogCanFile();
         this.catalogDirectory = config.getCatalogDirectory();
@@ -30,7 +38,8 @@ public final class TitleSia451 {
         this.numCan = new SimpleIntegerProperty(Integer.parseInt(fromCms.substring(0, 3)));
         this.yearCan = new SimpleIntegerProperty(Integer.parseInt(fromCms.substring(4, 6)));
         this.nomCan = new SimpleStringProperty(constNomCan());
-        this.etatCan = constEtatCan();
+        this.etatCan = new SimpleObjectProperty(constEtatCan());
+        this.buttonConvert = new SimpleObjectProperty(constButtonConvert());
     }
 
     private boolean connect()
@@ -47,7 +56,7 @@ public final class TitleSia451 {
         }
 
         else {
-            System.out.println("[ X ] File listCatalogCan.db exist");
+            System.out.println("[ X ] File listCatalogCan.db don't exist");
         }        
         
         return false;
@@ -105,11 +114,41 @@ public final class TitleSia451 {
     }
 
     //ETAT CAN
-    private Image constEtatCan() {
-        Image img = new Image("can/manager/img/false.png");
-        return img;
-    }
-    public Image etatCanProperty(){
+    public ObjectProperty<ImageView> etatCanProperty(){
         return this.etatCan;
+    }
+
+    private ImageView constEtatCan() {
+        Image img;
+        if(Files.exists(Paths.get(catalogDirectory.toString() + "/F" + getNumCan() + getYearCan() + ".cmc")))
+            img = new Image("can/manager/img/true.png"); 
+        else
+            img = new Image("can/manager/img/false.png"); 
+        
+        ImageView imgView = new ImageView(img);
+        
+        return imgView;
+    }
+    
+    //BUTTON CONVERT
+    private Button constButtonConvert() {
+        Button btn = null;
+        if(!Files.exists(Paths.get(catalogDirectory.toString() + "/F" + getNumCan() + getYearCan() + ".cmc")))
+        {
+            btn = new Button("Convertir");
+            btn.setOnAction((event) -> {                
+                MainApp main = null;
+                try {
+                    main = new MainApp();
+                } catch (SQLException ex) {
+                    Logger.getLogger(TitleSia451.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                main.showConvertDialog();
+            });
+        }
+        return btn;
+    }
+    public ObjectProperty<Button> buttonConvertProperty(){
+        return this.buttonConvert;
     }
 }

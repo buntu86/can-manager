@@ -1,5 +1,6 @@
 package can.manager.model;
 
+import can.manager.MainApp;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -44,7 +45,7 @@ public class Sia451 {
         
         return false;
     }          
-
+    
     private void setTitlesCan() {
         String sql = "SELECT DISTINCT z02 FROM records WHERE z01='G' AND LENGTH(z02) = 6";
 

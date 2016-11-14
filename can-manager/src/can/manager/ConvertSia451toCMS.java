@@ -11,16 +11,24 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 public class ConvertSia451toCMS {
 
     private final Path siaFilePath, cmsFilePath;
     private String lineTmp;
     private Connection conn = null;
+    private final String siaFile;
+    private final String cmsFile;
+    private Stage dialogStage;    
     
-    public ConvertSia451toCMS(String siaFile, String cmsFile) {
+    public ConvertSia451toCMS(String siaFile, String cmsFile, Stage dialogStage) {
         siaFilePath = Paths.get(siaFile);
         cmsFilePath = Paths.get(cmsFile);
+        this.siaFile = siaFile;
+        this.cmsFile = cmsFile;
+        this.dialogStage = dialogStage;
         
         if(checkPathSia())
             if(connect())
@@ -38,11 +46,25 @@ public class ConvertSia451toCMS {
                 siaFileName =  nameFile.substring(0, nameFile.lastIndexOf('.'));
                 Long sizeFile = Files.size(siaFilePath);
                 System.out.println("[ V ] File sia451 exist, name file \"" + siaFileName + "\", extension \"" + extensionFile.toLowerCase() + ", size file " + sizeFile + "byte");
-                return true;
+                if(extensionFile.toLowerCase().equals("01s")) {
+                    return true;
+                }
+
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Convertir");
+                    alert.setHeaderText(null);
+                    alert.setContentText(siaFile + "\nLe fichier n'est pas de type *.01S\nChoisissez un fichier de type *.01S");
+                    alert.showAndWait();
+                }
             }
         }
         catch(IOException e){
-            System.out.println("[ X ] Error file sia451 : " + e.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(siaFile + "\nFichier introuvable.\nVérifiez le nom du fichier et réessayer.");
+                alert.showAndWait();
         }
         
         return false;
@@ -59,11 +81,21 @@ public class ConvertSia451toCMS {
                 return true;
             } catch (SQLException e) {
                 System.out.println("[ X ] " + e.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage() + "\nErreur de type SQL.\nVeuillez choisir un autre nom de fichier et réessayer.");
+                alert.showAndWait();
             }
         }
 
         else {
-            System.out.println("[ X ] File .cms alreally exist");
+            System.out.println("[ X ] File .db alreally exist");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Convertir");
+            alert.setHeaderText(null);
+            alert.setContentText(cmsFile + "\nFichier sql déjà existant.\nVeuillez choisir un autre nom de fichier et réessayer.");
+            alert.showAndWait();
         }        
         
         return false;
@@ -91,6 +123,11 @@ public class ConvertSia451toCMS {
 
             } catch (SQLException e) {
                 System.out.println("[ X ] " + e.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Convertir");
+                alert.setHeaderText(null);
+                alert.setContentText(e.getMessage() + "\nErreur de type SQL.\nVeuillez choisir un autre nom de fichier et réessayer.");
+                alert.showAndWait();
         }   
         return false;
     }
@@ -156,13 +193,30 @@ public class ConvertSia451toCMS {
                     }
                     stat.executeUpdate("COMMIT;");
                     System.out.println("[ V ] Table \"records\" is populated");
+
+                    dialogStage.close();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Convertir");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Le fichier a été converti avec succès.");
+                    alert.showAndWait();                       
                 }
                 catch(SQLException e){
                     System.out.println("[ X ] " + e.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Convertir");
+                    alert.setHeaderText(null);
+                    alert.setContentText(e.getMessage() + "\nErreur de type SQL.\nVeuillez choisir un autre nom de fichier et réessayer.");
+                    alert.showAndWait();
                 }
         }
         catch(IOException e){
             System.out.println("[ X ] " + e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Convertir");
+            alert.setHeaderText(null);
+            alert.setContentText(siaFilePath.toString() + "\nErreur lors de l'ouverture du fichier\nVeuillez choisir un autre nom de fichier et réessayer.\nErreur : " + e.getMessage());
+            alert.showAndWait();
         }    
     }
 

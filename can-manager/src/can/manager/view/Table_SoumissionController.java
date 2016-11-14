@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Adrien
  */
-public class SoumissionViewerController implements Initializable {
+public class Table_SoumissionController implements Initializable {
 
     /**
      * Initializes the controller class.

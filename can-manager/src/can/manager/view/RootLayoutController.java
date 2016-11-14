@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,13 +54,20 @@ public class RootLayoutController implements Initializable {
     } 
     
     @FXML
-    private void handelConvert() throws IOException {
+    public void handelConvert() throws IOException {
         mainApp.showConvertDialog();
+        
     }
 
     @FXML
+    public void handelTest() throws IOException, SQLException {
+        MainApp main = new MainApp();
+        main.showConvertDialog();
+    }    
+    
+    @FXML
     private void handelImportSia451() throws IOException {
-        mainApp.importSia451();
+        mainApp.convert451toCMS();
     }    
 
     @FXML
@@ -67,7 +75,6 @@ public class RootLayoutController implements Initializable {
         mainApp.openSoumissionDialog();
     }    
 
-    
     @FXML
     private void handleAproposDe() {
         Alert alert = new Alert(AlertType.INFORMATION);

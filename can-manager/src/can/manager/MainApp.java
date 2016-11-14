@@ -1,17 +1,18 @@
 package can.manager;
 
-import can.manager.data.Config;
 import can.manager.model.CatalogCAN;
 import can.manager.model.Article;
 import can.manager.model.Sia451;
 import can.manager.model.TitleSia451;
 import can.manager.view.CatalogViewerController;
-import can.manager.view.ConvertDialogController;
-import can.manager.view.OpenSoumissionDialogController;
+import can.manager.view.Dialog_Convert451toCMS_Controller;
+import can.manager.view.Dialog_ConvertDBFtoCMC_Controller;
+import can.manager.view.Dialog_OpenSoum_Controller;
 import can.manager.view.RootLayoutController;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
 import javafx.application.Application;
@@ -28,14 +29,13 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
-    private Stage primaryStage;
+    private static Stage primaryStage;
     private BorderPane rootLayout;
     private CatalogCAN can = new CatalogCAN();
     private Sia451 sia451;
     private ObservableList<Article> articleFromSubPosition = FXCollections.observableArrayList();
     private AnchorPane catalogViewer;
     private String fileName;
-    public Config config = new Config();
     
     public MainApp() throws SQLException {        
         can.setMainApp(this);
@@ -51,7 +51,6 @@ public class MainApp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Can-manager");
         initRootLayout();
-        openCatalogViewer(""); 
     }
     
     public void initRootLayout() {
@@ -78,28 +77,50 @@ public class MainApp extends Application {
         return this.rootLayout;
     }
 
-    public void importSia451() {
-        String fileNameSia = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "canManager" + System.getProperty("file.separator") + "495-soum.01S";
-        String fileNameCms = System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "canManager" + System.getProperty("file.separator") + "495-soum.cms";        
-        ConvertSia451toCMS run = new ConvertSia451toCMS(fileNameSia, fileNameCms);
+    public void convert451toCMS() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Dialog_Convert451toCMS.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Convertir fichier Sia451 -> cms");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            
+            Dialog_Convert451toCMS_Controller controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setDialogStage(dialogStage);
+            
+            scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+                if(event.getCode().equals(KeyCode.ESCAPE))
+                    dialogStage.close();
+            });
+            
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }    
     }
     
     public void openCatalogViewer(String fileName) {
         can.initialize(fileName);
+        Path pathFileName = Paths.get(fileName).getFileName();
+        TitleSia451 title = new TitleSia451(pathFileName.toString().substring(1, 4) + " 00");
+        primaryStage.setTitle(title.getNumCan() + " - " + title.getNomCan() + " / CanManager");
         
         try {            
-            // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/CatalogViewer.fxml"));
             catalogViewer = (AnchorPane) loader.load();
-
-            // Set person overview into the center of root layout.
             rootLayout.setCenter(catalogViewer);
             
             CatalogViewerController controller = loader.getController();
             controller.setMainApp(this);
             controller.openCatalogViewer();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,7 +129,7 @@ public class MainApp extends Application {
     public void showConvertDialog() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/ConvertDialog.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/Dialog_ConvertDBFtoCMC.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
             
             Stage dialogStage = new Stage();
@@ -118,7 +139,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             
-            ConvertDialogController controller = loader.getController();
+            Dialog_ConvertDBFtoCMC_Controller controller = loader.getController();
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
             
@@ -137,7 +158,7 @@ public class MainApp extends Application {
     public void openSoumissionDialog() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/OpenSoumissionDialog.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/Dialog_OpenSoum.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
             
             Stage dialogStage = new Stage();
@@ -147,7 +168,7 @@ public class MainApp extends Application {
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
             
-            OpenSoumissionDialogController controller = loader.getController();
+            Dialog_OpenSoum_Controller controller = loader.getController();
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
             
@@ -175,7 +196,7 @@ public class MainApp extends Application {
         this.fileName = fileName;
     }    
     
-    public Stage getPrimaryStage() {
+    public static Stage getPrimaryStage() {
         return primaryStage;
     }
 
@@ -189,5 +210,5 @@ public class MainApp extends Application {
     
     public ObservableList<TitleSia451> getTitleCan(){
         return this.sia451.getTitlesCan();
-    }
+    }    
 }

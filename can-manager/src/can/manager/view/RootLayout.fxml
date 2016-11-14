@@ -13,27 +13,24 @@
           <Menu mnemonicParsing="false" text="Fichier">
             <items>
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#handelTest" text="Test" />
                   <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Quitter" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Catalogue">
               <items>
+              <MenuItem mnemonicParsing="false" onAction="#handelConvert" text="Importer catalogue (.dbf vers .cmc)" />
               <MenuItem mnemonicParsing="false" onAction="#handelOpen" text="Ouvrir catalogue" />
                   <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Fermer catalogue" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Soumission">
               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handelImportSia451" text="Importer soumission" />
+                  <MenuItem mnemonicParsing="false" onAction="#handelImportSia451" text="Importer soumission (.01S vers .cms)" />
                   <MenuItem mnemonicParsing="false" onAction="#handelOpenSoumission" text="Ouvrir soumission" />
                 <MenuItem mnemonicParsing="false" text="Fermer soumission" />
               </items>
             </Menu>
-          <Menu mnemonicParsing="false" text="Convertir">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#handelConvert" text="Exporter *.dbf -&gt; *.sql" />
-            </items>
-          </Menu>
           <Menu mnemonicParsing="false" text="?">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleAproposDe" text="A propos de" />

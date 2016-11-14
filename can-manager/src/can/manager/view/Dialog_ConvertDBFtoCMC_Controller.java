@@ -8,11 +8,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class ConvertDialogController {
+public class Dialog_ConvertDBFtoCMC_Controller {
 
     private Stage dialogStage;
     private MainApp mainApp;
@@ -26,9 +32,9 @@ public class ConvertDialogController {
     private TextField sqlFile;
     
     @FXML
-    public void initialize() {
+    public void initialize() {        
     }  
-    
+
     public void setMainApp(MainApp mainApp){
         this.mainApp = mainApp;
     }
@@ -46,7 +52,6 @@ public class ConvertDialogController {
         this.sqlFile.setText(file);
         this.sqlFilePath = Paths.get(file);
     }
-    
     
     @FXML
     private void handleConvert() throws IOException, InterruptedException, SQLException {

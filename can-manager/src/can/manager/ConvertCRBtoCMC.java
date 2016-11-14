@@ -22,7 +22,7 @@ public class ConvertCRBtoCMC {
     private String fileName, crbFile, sqlFile;
     private final Path crbFilePath, sqlFilePath;
     private Connection conn = null;  
-    private Stage dialogStage;
+    private final Stage dialogStage;
 
     public ConvertCRBtoCMC(String crbFile, String sqlFile, Stage dialogStage) {
         crbFilePath = Paths.get(crbFile);
