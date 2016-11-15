@@ -126,7 +126,7 @@ public class MainApp extends Application {
         }
     }
     
-    public void showConvertDialog() {
+    public void showConvertDialog(String fileName) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/Dialog_ConvertDBFtoCMC.fxml"));
@@ -142,6 +142,7 @@ public class MainApp extends Application {
             Dialog_ConvertDBFtoCMC_Controller controller = loader.getController();
             controller.setMainApp(this);
             controller.setDialogStage(dialogStage);
+            controller.setCrbFileFromSoum(fileName);
             
             scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
                 if(event.getCode().equals(KeyCode.ESCAPE))

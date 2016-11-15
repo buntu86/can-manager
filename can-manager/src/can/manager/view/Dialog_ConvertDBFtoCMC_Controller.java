@@ -43,6 +43,14 @@ public class Dialog_ConvertDBFtoCMC_Controller {
         this.dialogStage = dialogStage;
     }
     
+    public void setCrbFileFromSoum(String file){
+        if(file!=null)
+        {
+            setCrbFile(file);
+            setSqlFile(file.substring(0, file.length()-4) + ".cmc");
+        }   
+    }
+    
     public void setCrbFile(String file){
         this.crbFile.setText(file);
         this.crbFilePath = Paths.get(file);

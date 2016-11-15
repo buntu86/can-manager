@@ -55,14 +55,14 @@ public class RootLayoutController implements Initializable {
     
     @FXML
     public void handelConvert() throws IOException {
-        mainApp.showConvertDialog();
+        mainApp.showConvertDialog(null);
         
     }
 
     @FXML
     public void handelTest() throws IOException, SQLException {
         MainApp main = new MainApp();
-        main.showConvertDialog();
+        main.showConvertDialog(null);
     }    
     
     @FXML

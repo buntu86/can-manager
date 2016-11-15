@@ -120,7 +120,7 @@ public final class TitleSia451 {
 
     private ImageView constEtatCan() {
         Image img;
-        if(Files.exists(Paths.get(catalogDirectory.toString() + "/F" + getNumCan() + getYearCan() + ".cmc")))
+        if(Files.exists(Paths.get(catalogDirectory.toString() + "\\F" + getNumCan() + getYearCan() + ".cmc")))
             img = new Image("can/manager/img/true.png"); 
         else
             img = new Image("can/manager/img/false.png"); 
@@ -133,7 +133,7 @@ public final class TitleSia451 {
     //BUTTON CONVERT
     private Button constButtonConvert() {
         Button btn = null;
-        if(!Files.exists(Paths.get(catalogDirectory.toString() + "/F" + getNumCan() + getYearCan() + ".cmc")))
+        if(!Files.exists(Paths.get(catalogDirectory.toString() + "\\F" + getNumCan() + getYearCan() + ".cmc")))
         {
             btn = new Button("Convertir");
             btn.setOnAction((event) -> {                
@@ -143,7 +143,7 @@ public final class TitleSia451 {
                 } catch (SQLException ex) {
                     Logger.getLogger(TitleSia451.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                main.showConvertDialog();
+                main.showConvertDialog(catalogDirectory.toString() + "\\F" + getNumCan() + getYearCan() + ".dbf");
             });
         }
         return btn;
