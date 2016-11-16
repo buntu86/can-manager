@@ -3,15 +3,19 @@ package can.manager.view;
 import can.manager.MainApp;
 import can.manager.model.Sia451;
 import can.manager.model.TitleSia451;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 public class Viewer_SoumissionController implements Initializable {
 
@@ -20,6 +24,7 @@ public class Viewer_SoumissionController implements Initializable {
     
     @FXML
     private TabPane rootTabPane = new TabPane();
+    private TableView tableSoumission;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -43,6 +48,7 @@ public class Viewer_SoumissionController implements Initializable {
             
             //Add a new tab
             rootTabPane.getTabs().add(new Tab(str));
+            rootTabPane.getTabs().get(i).setContent(tableSoumission);
             
             //Set disable tabPan with etatCan *.cmc inexistant
             rootTabPane.getTabs().get(i).setDisable(title.getEtatCanBoolean());
@@ -67,8 +73,6 @@ public class Viewer_SoumissionController implements Initializable {
     }
     
     public void updateViewer(){
-        System.out.println("Tab Selection changed => " + rootTabPane.getSelectionModel().getSelectedIndex());
         
-        //rootTabPane.getSelectionModel().select(3);
     }
 }

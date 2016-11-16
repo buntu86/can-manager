@@ -1,6 +1,5 @@
 package can.manager.model;
 
-import can.manager.MainApp;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -66,8 +65,6 @@ public class Sia451 {
         if(!this.list.isEmpty())
         {
             System.out.println("[ V ] Size of list : " + this.list.size());
-            for(TitleSia451 temp : list)
-                    System.out.println(temp.getNumCan() + " - " + temp.getYearCan() + " " + temp.getNomCan());     
         }
         else
             System.out.println("[ X ] list is empty...");

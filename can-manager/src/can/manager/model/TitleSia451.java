@@ -97,7 +97,6 @@ public final class TitleSia451 {
             while(rs.next())
             {
                 tempNomCan = rs.getString("title");
-                System.out.println(rs.getString("title"));
             }                        
         }
         catch(SQLException e){
