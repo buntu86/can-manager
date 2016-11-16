@@ -188,7 +188,7 @@ public class ConvertCRBtoCMC {
                         stmtPrepared.setString(6, unit);
                         stmtPrepared.setString(7, publication);
                         stmtPrepared.setString(8, begin);
-                        stmtPrepared.setString(9, text);
+                        stmtPrepared.setString(9, text.trim());
 
                         stmtPrepared.executeUpdate();                
                     }

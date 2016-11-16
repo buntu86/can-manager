@@ -44,7 +44,7 @@
                <children>
                   <HBox alignment="CENTER" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Afficher">
+                        <Button mnemonicParsing="false" onAction="#handleShowSoumissionViewer" text="Afficher">
                            <HBox.margin>
                               <Insets right="25.0" />
                            </HBox.margin>

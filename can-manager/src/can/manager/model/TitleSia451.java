@@ -29,6 +29,7 @@ public final class TitleSia451 {
     private final IntegerProperty numCan, yearCan;
     private final SimpleObjectProperty<ImageView> etatCan;
     private final SimpleObjectProperty<Button> buttonConvert;
+    private int idTabPane = 0;
     
     public TitleSia451(String fromCms) /*112 15*/{
         Config config = new Config();
@@ -150,5 +151,9 @@ public final class TitleSia451 {
     }
     public ObjectProperty<Button> buttonConvertProperty(){
         return this.buttonConvert;
+    }
+
+    public void setIdTabPane(int i) {
+        this.idTabPane=i;
     }
 }

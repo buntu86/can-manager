@@ -4,8 +4,11 @@ import can.manager.MainApp;
 import can.manager.model.TitleSia451;
 import can.manager.data.Config;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.Path;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -74,6 +77,24 @@ public class Dialog_OpenSoum_Controller {
     @FXML
     private void handleCancel() {
         dialogStage.close();
+    }
+    
+    @FXML
+    private void handleShowSoumissionViewer(){
+        if(Files.exists(Paths.get(cmsFile.getText())))
+        {
+            dialogStage.close();
+            this.mainApp.showSoumissionViewer();
+        }
+        
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Soumission");
+            alert.setHeaderText(null);
+            alert.setContentText(cmsFile.getText() + "\nLe fichier de soumission est introuvable.");
+            alert.showAndWait();        
+        }   
     }
 
     public void setMainApp(MainApp mainApp){

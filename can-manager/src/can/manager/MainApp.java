@@ -9,6 +9,7 @@ import can.manager.view.Dialog_Convert451toCMS_Controller;
 import can.manager.view.Dialog_ConvertDBFtoCMC_Controller;
 import can.manager.view.Dialog_OpenSoum_Controller;
 import can.manager.view.RootLayoutController;
+import can.manager.view.Viewer_SoumissionController;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -34,7 +35,7 @@ public class MainApp extends Application {
     private CatalogCAN can = new CatalogCAN();
     private Sia451 sia451;
     private ObservableList<Article> articleFromSubPosition = FXCollections.observableArrayList();
-    private AnchorPane catalogViewer;
+    private AnchorPane catalogViewer, soumViewer;
     private String fileName;
     
     public MainApp() throws SQLException {        
@@ -104,6 +105,21 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }    
+    }
+    
+    public void showSoumissionViewer() {
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/Viewer_Soumission.fxml"));
+            soumViewer = (AnchorPane) loader.load();
+            rootLayout.setCenter(soumViewer);
+            
+            Viewer_SoumissionController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.showTabPane();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }        
     }
     
     public void openCatalogViewer(String fileName) {
@@ -207,6 +223,10 @@ public class MainApp extends Application {
 
     public void setSia451(Path cmsFile) {
         this.sia451 = new Sia451(cmsFile);
+    }
+    
+    public Sia451 getSia451(){
+        return this.sia451;
     }
     
     public ObservableList<TitleSia451> getTitleCan(){
