@@ -30,6 +30,7 @@ public final class TitleSia451 {
     private final SimpleObjectProperty<ImageView> etatCan;
     private final SimpleObjectProperty<Button> buttonConvert;
     private int idTabPane = 0;
+    private Boolean etatCanBoolean;
     
     public TitleSia451(String fromCms) /*112 15*/{
         Config config = new Config();
@@ -122,13 +123,23 @@ public final class TitleSia451 {
     private ImageView constEtatCan() {
         Image img;
         if(Files.exists(Paths.get(catalogDirectory.toString() + "\\F" + getNumCan() + getYearCan() + ".cmc")))
-            img = new Image("can/manager/img/true.png"); 
+        {
+            img = new Image("can/manager/img/true.png");
+            this.etatCanBoolean = false;
+        } 
         else
-            img = new Image("can/manager/img/false.png"); 
+        {
+            img = new Image("can/manager/img/false.png");
+            this.etatCanBoolean = true;
+        } 
         
         ImageView imgView = new ImageView(img);
         
         return imgView;
+    }
+    
+    public Boolean getEtatCanBoolean(){
+        return this.etatCanBoolean;
     }
     
     //BUTTON CONVERT

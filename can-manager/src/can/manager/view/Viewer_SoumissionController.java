@@ -36,14 +36,23 @@ public class Viewer_SoumissionController implements Initializable {
 
         for(TitleSia451 title:sia451.getTitlesCan())
         {
-            String str = new String(title.getNumCan() + " " + title.getNomCan());
-            if(str.length()>10)
+            //Set string (numCan nomCan), if > 15 substing and add ..
+            String str = title.getNumCan() + " " + title.getNomCan();
+            if(str.length()>15)
                 str = str.substring(0, 15)+"..";
+            
+            //Add a new tab
             rootTabPane.getTabs().add(new Tab(str));
-            title.setIdTabPane(i);
+            
+            //Set disable tabPan with etatCan *.cmc inexistant
+            rootTabPane.getTabs().get(i).setDisable(title.getEtatCanBoolean());
+            
+            //update title with idTabPane
+            title.setIdTabPane(i);            
+
             i++;
         }
-
+     
         updateViewer();
 
         //Listener change tab
@@ -58,8 +67,7 @@ public class Viewer_SoumissionController implements Initializable {
     }
     
     public void updateViewer(){
-        System.out.println("Tab Selection changed");
-        System.out.println(rootTabPane.getSelectionModel().getSelectedIndex());
+        System.out.println("Tab Selection changed => " + rootTabPane.getSelectionModel().getSelectedIndex());
         
         //rootTabPane.getSelectionModel().select(3);
     }
