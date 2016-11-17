@@ -13,9 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 
 public class Viewer_SoumissionController implements Initializable {
 
@@ -24,7 +22,6 @@ public class Viewer_SoumissionController implements Initializable {
     
     @FXML
     private TabPane rootTabPane = new TabPane();
-    private TableView tableSoumission;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,7 +45,6 @@ public class Viewer_SoumissionController implements Initializable {
             
             //Add a new tab
             rootTabPane.getTabs().add(new Tab(str));
-            rootTabPane.getTabs().get(i).setContent(tableSoumission);
             
             //Set disable tabPan with etatCan *.cmc inexistant
             rootTabPane.getTabs().get(i).setDisable(title.getEtatCanBoolean());
@@ -73,6 +69,22 @@ public class Viewer_SoumissionController implements Initializable {
     }
     
     public void updateViewer(){
-        
+        if(!rootTabPane.getSelectionModel().getSelectedItem().isDisable())
+        {
+            AnchorPane table = null;
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainApp.class.getResource("view/Table_Soumission.fxml"));
+                table = (AnchorPane) loader.load();
+                Table_SoumissionController controller = loader.getController();
+            }
+            catch(IOException e){
+                System.out.println("[ X ] Erreur file Table_Soumission.fxml " + e.getMessage());
+            }
+            rootTabPane.getSelectionModel().getSelectedItem().setContent(table);
+        }
     }
 }
+
+
+//System.out.println(rootTabPane.getSelectionModel().getSelectedIndex());
