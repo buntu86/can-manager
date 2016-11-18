@@ -6,14 +6,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="can.manager.view.Table_SoumissionController">
    <children>
-      <TableView cache="true" layoutX="42.0" layoutY="29.0" pickOnBounds="false" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TableView fx:id="table" cache="true" layoutX="42.0" layoutY="29.0" pickOnBounds="false" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
-          <TableColumn editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Article" />
-          <TableColumn editable="false" maxWidth="1000.0" minWidth="25.0" prefWidth="300.0" sortable="false" text="Description du travail" />
-            <TableColumn editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" sortable="false" text="Quantité" />
-            <TableColumn editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="UM" />
-            <TableColumn editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" sortable="false" text="Prix" />
-            <TableColumn editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" sortable="false" text="Montant" />
+          <TableColumn fx:id="articleColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" resizable="false" sortable="false" text="Article" />
+          <TableColumn fx:id="descColumn" editable="false" maxWidth="1000.0" minWidth="25.0" prefWidth="300.0" sortable="false" text="Description du travail" />
+            <TableColumn fx:id="quantiteColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" sortable="false" text="Quantité" />
+            <TableColumn fx:id="umColumn" editable="false" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="UM" />
+            <TableColumn fx:id="prixSoumColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" sortable="false" text="Prix soumis" />
+            <TableColumn fx:id="totalColumn" editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" sortable="false" text="Montant" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -1,27 +1,50 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package can.manager.view;
 
+import can.manager.model.SoumCatalog;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
-/**
- * FXML Controller class
- *
- * @author Adrien
- */
 public class Table_SoumissionController implements Initializable {
+    private int selectedIndex;
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private TableView<SoumCatalog> table;
+
+    @FXML
+    private TableColumn<SoumCatalog, String> articleColumn;
+
+    @FXML
+    private TableColumn<SoumCatalog, String> descColumn;
+    
+    @FXML
+    private TableColumn<SoumCatalog, Integer> quantiteColumn;
+    
+    @FXML
+    private TableColumn<SoumCatalog, String> umColumn;
+    
+    @FXML
+    private TableColumn<SoumCatalog, Integer> prixSoumColumn;
+    
+    @FXML
+    private TableColumn<SoumCatalog, Integer> totalColumn;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        /*
+        numCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().numCanProperty().asObject());
+        yearCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().yearCanProperty().asObject());
+        nomCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().nomCanProperty());
+        */
+        
+        
     }    
-    
+
+    void setIdCan(int selectedIndex) {
+        System.out.println("[ V ] " + selectedIndex);
+        this.selectedIndex = selectedIndex;
+    }
 }

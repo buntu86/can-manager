@@ -77,6 +77,7 @@ public class Viewer_SoumissionController implements Initializable {
                 loader.setLocation(MainApp.class.getResource("view/Table_Soumission.fxml"));
                 table = (AnchorPane) loader.load();
                 Table_SoumissionController controller = loader.getController();
+                controller.setIdCan(rootTabPane.getSelectionModel().getSelectedIndex());
             }
             catch(IOException e){
                 System.out.println("[ X ] Erreur file Table_Soumission.fxml " + e.getMessage());
