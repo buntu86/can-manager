@@ -30,17 +30,16 @@ public class Table_SoumissionController implements Initializable {
     private TableColumn<SoumCatalog, Integer> prixSoumColumn;
     
     @FXML
-    private TableColumn<SoumCatalog, Integer> totalColumn;
+    private TableColumn<SoumCatalog, Integer> totalSoumColumn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*
-        numCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().numCanProperty().asObject());
-        yearCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().yearCanProperty().asObject());
-        nomCatalogColumn.setCellValueFactory(cellData -> cellData.getValue().nomCanProperty());
-        */
-        
-        
+        /*articleColumn.setCellValueFactory(cellData -> cellData.getValue().articleProperty());
+        descColumn.setCellValueFactory(cellData -> cellData.getValue().descProperty());
+        quantiteColumn.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject());
+        umColumn.setCellValueFactory(cellData -> cellData.getValue().umProperty());
+        prixSoumColumn.setCellValueFactory(cellData -> cellData.getValue().prixSoumProperty().asObject());
+        totalSoumColumn.setCellValueFactory(cellData -> cellData.getValue().totalSoumProperty().asObject());        */
     }    
 
     void setIdCan(int selectedIndex) {

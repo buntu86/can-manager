@@ -91,7 +91,12 @@ public class RootLayoutController implements Initializable {
     }
 
     @FXML
-    private void handleClose(){
+    private void handleCloseCatalog(){
         mainApp.closeCatalogViewer();
+    }
+
+    @FXML
+    private void handleCloseSoum(){
+        mainApp.closeSoumViewer();
     }
 }

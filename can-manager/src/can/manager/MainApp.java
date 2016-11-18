@@ -204,6 +204,10 @@ public class MainApp extends Application {
     public void closeCatalogViewer() {
         rootLayout.getChildren().remove(catalogViewer);
     }
+
+    public void closeSoumViewer() {
+        rootLayout.getChildren().remove(soumViewer);
+    }
     
     public String getFileName(){
         return this.fileName;

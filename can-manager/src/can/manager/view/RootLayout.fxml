@@ -21,14 +21,14 @@
               <items>
               <MenuItem mnemonicParsing="false" onAction="#handelConvert" text="Importer catalogue (.dbf vers .cmc)" />
               <MenuItem mnemonicParsing="false" onAction="#handelOpen" text="Ouvrir catalogue" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleClose" text="Fermer catalogue" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleCloseCatalog" text="Fermer catalogue" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Soumission">
               <items>
                   <MenuItem mnemonicParsing="false" onAction="#handelImportSia451" text="Importer soumission (.01S vers .cms)" />
                   <MenuItem mnemonicParsing="false" onAction="#handelOpenSoumission" text="Ouvrir soumission" />
-                <MenuItem mnemonicParsing="false" text="Fermer soumission" />
+                <MenuItem mnemonicParsing="false" onAction="#handleCloseSoum" text="Fermer soumission" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="?">
