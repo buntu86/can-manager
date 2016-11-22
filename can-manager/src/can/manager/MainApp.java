@@ -1,9 +1,9 @@
 package can.manager;
 
-import can.manager.model.CatalogCAN;
-import can.manager.model.Article;
-import can.manager.model.Sia451;
-import can.manager.model.TitleSia451;
+import can.manager.model.Catalog;
+import can.manager.model.CatalogArticles;
+import can.manager.model.Soum;
+import can.manager.model.SoumTitles;
 import can.manager.view.CatalogViewerController;
 import can.manager.view.Dialog_Convert451toCMS_Controller;
 import can.manager.view.Dialog_ConvertDBFtoCMC_Controller;
@@ -32,9 +32,9 @@ public class MainApp extends Application {
 
     private static Stage primaryStage;
     private BorderPane rootLayout;
-    private CatalogCAN can = new CatalogCAN();
-    private Sia451 sia451;
-    private ObservableList<Article> articleFromSubPosition = FXCollections.observableArrayList();
+    private Catalog can = new Catalog();
+    private Soum sia451;
+    private ObservableList<CatalogArticles> articleFromSubPosition = FXCollections.observableArrayList();
     private AnchorPane catalogViewer, soumViewer;
     private String fileName;
     
@@ -43,7 +43,7 @@ public class MainApp extends Application {
         can.initialize();
     }
     
-    public CatalogCAN getCatalogCAN(){
+    public Catalog getCatalogCAN(){
         return this.can;
     }  
         
@@ -125,7 +125,7 @@ public class MainApp extends Application {
     public void openCatalogViewer(String fileName) {
         can.initialize(fileName);
         Path pathFileName = Paths.get(fileName).getFileName();
-        TitleSia451 title = new TitleSia451(pathFileName.toString().substring(1, 4) + " 00");
+        SoumTitles title = new SoumTitles(pathFileName.toString().substring(1, 4) + " 00");
         primaryStage.setTitle(title.getNumCan() + " - " + title.getNomCan() + " / CanManager");
         
         try {            
@@ -226,14 +226,14 @@ public class MainApp extends Application {
     }
 
     public void setSia451(Path cmsFile) {
-        this.sia451 = new Sia451(cmsFile);
+        this.sia451 = new Soum(cmsFile);
     }
     
-    public Sia451 getSia451(){
+    public Soum getSia451(){
         return this.sia451;
     }
     
-    public ObservableList<TitleSia451> getTitleCan(){
+    public ObservableList<SoumTitles> getTitleCan(){
         return this.sia451.getTitlesCan();
     }    
 }

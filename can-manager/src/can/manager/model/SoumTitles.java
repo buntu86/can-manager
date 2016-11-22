@@ -22,7 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public final class TitleSia451 {
+public final class SoumTitles {
     private Connection conn = null;
     private final Path listCatalogCanFile, catalogDirectory;
     private final StringProperty nomCan;
@@ -32,7 +32,7 @@ public final class TitleSia451 {
     private int idTabPane = 0;
     private Boolean etatCanBoolean;
     
-    public TitleSia451(String fromCms) /*112 15*/{
+    public SoumTitles(String fromCms) /*112 15*/{
         Config config = new Config();
         this.listCatalogCanFile = config.getListCatalogCanFile();
         this.catalogDirectory = config.getCatalogDirectory();
@@ -152,7 +152,7 @@ public final class TitleSia451 {
                 try {
                     main = new MainApp();
                 } catch (SQLException ex) {
-                    Logger.getLogger(TitleSia451.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SoumTitles.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 main.showConvertDialog(catalogDirectory.toString() + "\\F" + getNumCan() + getYearCan() + ".dbf");
             });
@@ -162,7 +162,12 @@ public final class TitleSia451 {
     public ObjectProperty<Button> buttonConvertProperty(){
         return this.buttonConvert;
     }
-
+    
+    //Index tab
+    public int getIndex(){
+        return this.idTabPane;
+    }
+    
     public void setIdTabPane(int i) {
         this.idTabPane=i;
     }

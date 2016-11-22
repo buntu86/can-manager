@@ -1,7 +1,7 @@
 package can.manager.view;
 
 import can.manager.MainApp;
-import can.manager.model.TitleSia451;
+import can.manager.model.SoumTitles;
 import can.manager.data.Config;
 import java.io.File;
 import java.nio.file.Files;
@@ -29,17 +29,17 @@ public class Dialog_OpenSoum_Controller {
     private TextField cmsFile;
     
     @FXML
-    private TableView<TitleSia451> tableTitles;
+    private TableView<SoumTitles> tableTitles;
     @FXML
-    private TableColumn<TitleSia451, ImageView> etatColumn;
+    private TableColumn<SoumTitles, ImageView> etatColumn;
     @FXML
-    private TableColumn<TitleSia451, Integer> numCatalogColumn;
+    private TableColumn<SoumTitles, Integer> numCatalogColumn;
     @FXML
-    private TableColumn<TitleSia451, Integer> yearCatalogColumn;
+    private TableColumn<SoumTitles, Integer> yearCatalogColumn;
     @FXML
-    private TableColumn<TitleSia451, String> nomCatalogColumn; 
+    private TableColumn<SoumTitles, String> nomCatalogColumn; 
     @FXML
-    private TableColumn<TitleSia451, Button> buttonConvertColumn;
+    private TableColumn<SoumTitles, Button> buttonConvertColumn;
     
     @FXML
     public void initialize() {

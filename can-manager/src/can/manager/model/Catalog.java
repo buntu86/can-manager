@@ -12,12 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 
-public class CatalogCAN {
+public class Catalog {
     private Connection conn = null;
     private MainApp mainApp;
     private String fileName;
     
-    public CatalogCAN() throws SQLException{
+    public Catalog() throws SQLException{
         setFileName(System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can2.db");
     }
 
@@ -54,17 +54,17 @@ public class CatalogCAN {
         }        
     }      
     
-    public String getTitleParagraphe(Article article){
+    public String getTitleParagraphe(CatalogArticles article){
         int paragraphe = (article.getPosition()/100) * 100;
         return getTitle(paragraphe);
     }
 
-    public String getTitleSousParagraphe(Article article){
+    public String getTitleSousParagraphe(CatalogArticles article){
         int sousParagraphe = (article.getPosition()/10) * 10;
         return getTitle(sousParagraphe);
     }    
 
-    public String getTitleArticle(Article article){
+    public String getTitleArticle(CatalogArticles article){
         int articleTitle = article.getPosition();
         return getTitle(articleTitle);
     }    
@@ -109,10 +109,10 @@ public class CatalogCAN {
         return title;        
     }
     
-    public ObservableList<Article> getSubPositionFromPosition(Article article){
-        ObservableList<Article> subPositionsFromPosition = FXCollections.observableArrayList();
+    public ObservableList<CatalogArticles> getSubPositionFromPosition(CatalogArticles article){
+        ObservableList<CatalogArticles> subPositionsFromPosition = FXCollections.observableArrayList();
         String sql = "SELECT * FROM CAN WHERE position=" + article.getPosition();
-        Article articleTmp = new Article();
+        CatalogArticles articleTmp = new CatalogArticles();
         try(
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
@@ -125,7 +125,7 @@ public class CatalogCAN {
                 }
                 else
                 {
-                    articleTmp = new Article();                    
+                    articleTmp = new CatalogArticles();                    
                     articleTmp.setArticle(rs.getInt("ID"), rs.getInt("position"), rs.getInt("subPosition"), rs.getInt("variable"), rs.getInt("line"), rs.getString("alt"), rs.getString("unit"), rs.getInt("publication"), rs.getInt("begin"), rs.getString("text"));                                    
                     subPositionsFromPosition.add(articleTmp);                
                 }
@@ -138,9 +138,9 @@ public class CatalogCAN {
         return subPositionsFromPosition;        
     }
     
-    public ObservableList<Article> getAllParagraphe()
+    public ObservableList<CatalogArticles> getAllParagraphe()
     {
-        ObservableList<Article> articlesAllParagraphe = FXCollections.observableArrayList();;
+        ObservableList<CatalogArticles> articlesAllParagraphe = FXCollections.observableArrayList();;
         String sql = "SELECT * FROM CAN";
         int lastChapter=1;
         
@@ -166,9 +166,9 @@ public class CatalogCAN {
         return articlesAllParagraphe;
     }
 
-    public ObservableList<Article> getSousParagraphe(int paragraphe)
+    public ObservableList<CatalogArticles> getSousParagraphe(int paragraphe)
     {
-        ObservableList<Article> articlesSousParagraphe = FXCollections.observableArrayList();;
+        ObservableList<CatalogArticles> articlesSousParagraphe = FXCollections.observableArrayList();;
         String sql = "SELECT * FROM CAN WHERE position>" + paragraphe + " AND position<=" + (paragraphe+99);
         int lastSousParagraphe=1;
         
@@ -194,9 +194,9 @@ public class CatalogCAN {
         return articlesSousParagraphe;
     }
 
-    public ObservableList<Article> getArticle(int sousParagraphe)
+    public ObservableList<CatalogArticles> getArticle(int sousParagraphe)
     {
-        ObservableList<Article> articlesArticle = FXCollections.observableArrayList();;
+        ObservableList<CatalogArticles> articlesArticle = FXCollections.observableArrayList();;
         String sql = "SELECT * FROM CAN WHERE position>" + sousParagraphe + " AND position<=" + (sousParagraphe+9);
         int lastArticle=1;
         
@@ -220,16 +220,16 @@ public class CatalogCAN {
     }    
     
     
-    public Article getArticleFromPosition(int position, int subPosition){
+    public CatalogArticles getArticleFromPosition(int position, int subPosition){
         String sql = "SELECT * FROM CAN WHERE position=" + position + " AND subPosition=" + subPosition;
-        Article article = new Article();
+        CatalogArticles article = new CatalogArticles();
         int lastLine=0;
         
         try(
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql)){
             
-            article = new Article(rs.getInt("ID"), rs.getInt("position"), rs.getInt("subPosition"), rs.getInt("variable"), rs.getInt("line"), rs.getString("alt"), rs.getString("unit"), rs.getInt("publication"), rs.getInt("begin"), "");    
+            article = new CatalogArticles(rs.getInt("ID"), rs.getInt("position"), rs.getInt("subPosition"), rs.getInt("variable"), rs.getInt("line"), rs.getString("alt"), rs.getString("unit"), rs.getInt("publication"), rs.getInt("begin"), "");    
 
             while(rs.next() && !rs.getString("text").startsWith("-----") && rs.getInt("line")>lastLine){
                 String text = rs.getString("text").replaceAll("\\s+$", "");
@@ -254,21 +254,21 @@ public class CatalogCAN {
         return article;
     }
     
-    public TreeItem<Article> getTreeCan()
+    public TreeItem<CatalogArticles> getTreeCan()
     {
-        TreeItem<Article> treeCan = new TreeItem<> ();
+        TreeItem<CatalogArticles> treeCan = new TreeItem<> ();
         treeCan.setExpanded(true);
         
-        for(Article artLev01 : getAllParagraphe())
+        for(CatalogArticles artLev01 : getAllParagraphe())
         {
-            TreeItem<Article> paragraphe = new TreeItem<> (artLev01);
+            TreeItem<CatalogArticles> paragraphe = new TreeItem<> (artLev01);
             
-            for(Article artLev02 : getSousParagraphe(artLev01.getPosition()))
+            for(CatalogArticles artLev02 : getSousParagraphe(artLev01.getPosition()))
             {
-                TreeItem<Article> sousParagraphe = new TreeItem<> (artLev02);
-                for(Article artLev03 : getArticle(artLev02.getPosition()))
+                TreeItem<CatalogArticles> sousParagraphe = new TreeItem<> (artLev02);
+                for(CatalogArticles artLev03 : getArticle(artLev02.getPosition()))
                 {
-                    TreeItem<Article> article = new TreeItem<> (artLev03);
+                    TreeItem<CatalogArticles> article = new TreeItem<> (artLev03);
                     sousParagraphe.getChildren().add(article);
                 }
 

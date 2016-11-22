@@ -4,21 +4,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import can.manager.MainApp;
-import can.manager.model.Article;
+import can.manager.model.CatalogArticles;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeView;
 
 public class CatalogViewerController {
     @FXML
-    private TableView<Article> articleTable;
+    private TableView<CatalogArticles> articleTable;
     @FXML
-    private TableColumn<Article, Integer> numberColumn;
+    private TableColumn<CatalogArticles, Integer> numberColumn;
     @FXML
-    private TableColumn<Article, Integer> subNumberColumn;
+    private TableColumn<CatalogArticles, Integer> subNumberColumn;
     @FXML
-    private TableColumn<Article, Integer> variableColumn;
+    private TableColumn<CatalogArticles, Integer> variableColumn;
     @FXML
-    private TableColumn<Article, String> textColumn;    
+    private TableColumn<CatalogArticles, String> textColumn;    
     @FXML
     private Label paragrapheLabel;
     @FXML
@@ -28,7 +28,7 @@ public class CatalogViewerController {
 
     
     @FXML
-    private TreeView<Article> rootTree;
+    private TreeView<CatalogArticles> rootTree;
     
     private MainApp mainApp;
     
@@ -56,7 +56,7 @@ public class CatalogViewerController {
         rootTree.setShowRoot(false);
     }
     
-    private void showArticlesDetails(Article article) {
+    private void showArticlesDetails(CatalogArticles article) {
         if(article != null){
             paragrapheLabel.setText(mainApp.getCatalogCAN().getTitleParagraphe(article));
             

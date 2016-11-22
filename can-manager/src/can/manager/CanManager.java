@@ -1,6 +1,6 @@
 package can.manager;
 
-import can.manager.model.CatalogCAN;
+import can.manager.model.Catalog;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.fxml.FXMLLoader;
@@ -11,7 +11,7 @@ public class CanManager {
     
     public static void main(String[] args) throws SQLException, IOException, InterruptedException{
 
-        CatalogCAN data = new CatalogCAN();    
+        Catalog data = new Catalog();    
         
    }
 }

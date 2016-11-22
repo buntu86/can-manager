@@ -1,8 +1,8 @@
 package can.manager.view;
 
 import can.manager.MainApp;
-import can.manager.model.Sia451;
-import can.manager.model.TitleSia451;
+import can.manager.model.Soum;
+import can.manager.model.SoumTitles;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,7 +18,7 @@ import javafx.scene.layout.AnchorPane;
 public class Viewer_SoumissionController implements Initializable {
 
     private MainApp mainApp;
-    private Sia451 sia451 = null;
+    private Soum sia451 = null;
     
     @FXML
     private TabPane rootTabPane = new TabPane();
@@ -36,7 +36,7 @@ public class Viewer_SoumissionController implements Initializable {
         sia451 = mainApp.getSia451();
         int i=0;
 
-        for(TitleSia451 title:sia451.getTitlesCan())
+        for(SoumTitles title:sia451.getTitlesCan())
         {
             //Set string (numCan nomCan), if > 15 substing and add ..
             String str = title.getNumCan() + " " + title.getNomCan();
@@ -70,19 +70,24 @@ public class Viewer_SoumissionController implements Initializable {
     
     public void updateViewer(){
         if(!rootTabPane.getSelectionModel().getSelectedItem().isDisable())
-        {
+        {            
             AnchorPane table = null;
             try {
+                int index=rootTabPane.getSelectionModel().getSelectedIndex();
+                mainApp.getSia451().setIndexTabSelected(index);
+                
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainApp.class.getResource("view/Table_Soumission.fxml"));
                 table = (AnchorPane) loader.load();
                 Table_SoumissionController controller = loader.getController();
-                controller.setIdCan(rootTabPane.getSelectionModel().getSelectedIndex());
+                controller.setIndexTab(index);
+                
+                rootTabPane.getSelectionModel().getSelectedItem().setContent(table);
+                System.out.println("[ V ] " + mainApp.getSia451().getNumCanSelected());
             }
             catch(IOException e){
                 System.out.println("[ X ] Erreur file Table_Soumission.fxml " + e.getMessage());
             }
-            rootTabPane.getSelectionModel().getSelectedItem().setContent(table);
         }
     }
 }

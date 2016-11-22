@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Article {
+public class CatalogArticles {
 
     private IntegerProperty ID;
     private IntegerProperty position;
@@ -18,11 +18,11 @@ public class Article {
     private IntegerProperty begin;
     private StringProperty text;
 
-    public Article() {
+    public CatalogArticles() {
         this(0, 0, 0, 0, 0, null, null, 0, 0, null);
     }
     
-    public Article(int ID, int position, int subPosition, int variable, int line, String alt, String unit, int publication, int begin, String text){
+    public CatalogArticles(int ID, int position, int subPosition, int variable, int line, String alt, String unit, int publication, int begin, String text){
         this.ID = new SimpleIntegerProperty(ID);
         this.position = new SimpleIntegerProperty(position);
         this.subPosition = new SimpleIntegerProperty(subPosition);

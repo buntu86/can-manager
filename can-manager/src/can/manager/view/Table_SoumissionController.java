@@ -1,6 +1,6 @@
 package can.manager.view;
 
-import can.manager.model.SoumCatalog;
+import can.manager.model.SoumArticles;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -12,25 +12,25 @@ public class Table_SoumissionController implements Initializable {
     private int selectedIndex;
 
     @FXML
-    private TableView<SoumCatalog> table;
+    private TableView<SoumArticles> table;
 
     @FXML
-    private TableColumn<SoumCatalog, String> articleColumn;
+    private TableColumn<SoumArticles, String> articleColumn;
 
     @FXML
-    private TableColumn<SoumCatalog, String> descColumn;
+    private TableColumn<SoumArticles, String> descColumn;
     
     @FXML
-    private TableColumn<SoumCatalog, Integer> quantiteColumn;
+    private TableColumn<SoumArticles, Float> quantiteColumn;
     
     @FXML
-    private TableColumn<SoumCatalog, String> umColumn;
+    private TableColumn<SoumArticles, String> umColumn;
     
     @FXML
-    private TableColumn<SoumCatalog, Integer> prixSoumColumn;
+    private TableColumn<SoumArticles, Float> prixSoumColumn;
     
     @FXML
-    private TableColumn<SoumCatalog, Integer> totalSoumColumn;
+    private TableColumn<SoumArticles, Float> totalSoumColumn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -39,11 +39,11 @@ public class Table_SoumissionController implements Initializable {
         quantiteColumn.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject());
         umColumn.setCellValueFactory(cellData -> cellData.getValue().umProperty());
         prixSoumColumn.setCellValueFactory(cellData -> cellData.getValue().prixSoumProperty().asObject());
-        totalSoumColumn.setCellValueFactory(cellData -> cellData.getValue().totalSoumProperty().asObject());        */
-    }    
-
-    void setIdCan(int selectedIndex) {
+        totalSoumColumn.setCellValueFactory(cellData -> cellData.getValue().totalSoumProperty().asObject());*/
+    }
+    
+    void setIndexTab(int selectedIndex) {
         System.out.println("[ V ] " + selectedIndex);
         this.selectedIndex = selectedIndex;
-    }
+}
 }
