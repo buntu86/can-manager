@@ -75,6 +75,10 @@ public class Soum {
     public ObservableList<SoumTitles> getTitlesCan(){
         return this.listTitles;
     }
+
+    public ObservableList<SoumArticles> getArticles(){
+        return this.listArticles;
+    }
     
     public void setIndexTabSelected(int index){
         SoumTitles title = this.listTitles.stream()
@@ -87,31 +91,44 @@ public class Soum {
     }
 
     private void setArticlesFromCan(int can) {
-        
-        String sql = "SELECT DISTINCT z02 FROM records WHERE z01='G' AND LENGTH(z02) = 3 AND z02 = " + can;
+        SoumArticles article = null;
+        String sql = "SELECT * FROM records WHERE z01='G' AND LENGTH(z02) = 3 AND z02 = " + can;
         System.out.println("setArticlesCan : " + sql);
-/*
+
         try{
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
-
+                listArticles.clear();
+                
                 while(rs.next())
                 {
-                    SoumTitles title = new SoumTitles(rs.getString("z02"));
-                    listTitles.add(title);
+                    if(article!=null && rs.getString("z03").equals(article.getArticle()))
+                    {
+                        article.addDesc(rs.getString("z23"));
+                        System.out.println("-- article addDesc : " + article.getArticle() + " " + rs.getString("z23"));
+                    }
+                    else{
+                        if(article!=null)
+                            listArticles.add(article);
+                        article = new SoumArticles(
+                            rs.getString("z03"), 
+                            rs.getString("z23"), 
+                            rs.getString("z15"), 
+                            rs.getString("z16"), 
+                            rs.getString("z19"));
+                            }
                 }
         }
         catch(SQLException e){
             System.out.println("[ X ] " + e.getMessage());
         }
 
-        if(!this.listTitles.isEmpty())
+        if(!this.listArticles.isEmpty())
         {
-            System.out.println("[ V ] Size of list : " + this.listTitles.size());
+            System.out.println("[ V ] Size of listArticles : " + this.listArticles.size());
         }
         else
-            System.out.println("[ X ] list is empty...");        
-        */        
+            System.out.println("[ X ] list is empty...");          
     }
     
     public int getNumCanSelected(){

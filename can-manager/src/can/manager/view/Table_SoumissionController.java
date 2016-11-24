@@ -1,5 +1,6 @@
 package can.manager.view;
 
+import can.manager.MainApp;
 import can.manager.model.SoumArticles;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,18 +33,29 @@ public class Table_SoumissionController implements Initializable {
     @FXML
     private TableColumn<SoumArticles, Float> totalSoumColumn;
     
+    private MainApp mainApp;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*articleColumn.setCellValueFactory(cellData -> cellData.getValue().articleProperty());
+        articleColumn.setCellValueFactory(cellData -> cellData.getValue().articleProperty());
         descColumn.setCellValueFactory(cellData -> cellData.getValue().descProperty());
         quantiteColumn.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject());
         umColumn.setCellValueFactory(cellData -> cellData.getValue().umProperty());
         prixSoumColumn.setCellValueFactory(cellData -> cellData.getValue().prixSoumProperty().asObject());
-        totalSoumColumn.setCellValueFactory(cellData -> cellData.getValue().totalSoumProperty().asObject());*/
+        totalSoumColumn.setCellValueFactory(cellData -> cellData.getValue().totalSoumProperty().asObject());
     }
     
     void setIndexTab(int selectedIndex) {
         System.out.println("[ V ] " + selectedIndex);
         this.selectedIndex = selectedIndex;
-}
+        
+        if(!mainApp.getSia451().getArticles().isEmpty())
+            table.setItems(mainApp.getSia451().getArticles());
+        else
+            table.setItems(null);
+    }
+
+    void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
+    }
 }

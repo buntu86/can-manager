@@ -80,6 +80,7 @@ public class Viewer_SoumissionController implements Initializable {
                 loader.setLocation(MainApp.class.getResource("view/Table_Soumission.fxml"));
                 table = (AnchorPane) loader.load();
                 Table_SoumissionController controller = loader.getController();
+                controller.setMainApp(mainApp);
                 controller.setIndexTab(index);
                 
                 rootTabPane.getSelectionModel().getSelectedItem().setContent(table);

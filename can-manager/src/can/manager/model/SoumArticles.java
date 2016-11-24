@@ -1,5 +1,6 @@
 package can.manager.model;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,15 +14,19 @@ public class SoumArticles {
     private FloatProperty prixSoum;
     private FloatProperty totalSoum;
 
-    public SoumArticles(String article, String desc, int quantite, String um, int prixSoum, int totalSoum){
+    public SoumArticles(String article, String desc, String quantite, String um, String prixSoum){
+        if(quantite.isEmpty())
+            quantite="0";
+        if(prixSoum.isEmpty())
+            prixSoum="0";
+        
         this.article = new SimpleStringProperty(article);
         this.desc = new SimpleStringProperty(desc);
-        this.quantite = new SimpleFloatProperty(quantite);
+        this.quantite = new SimpleFloatProperty(Float.valueOf(quantite));
         this.um = new SimpleStringProperty(um);
-        this.prixSoum = new SimpleFloatProperty(prixSoum);
-        this.totalSoum = new SimpleFloatProperty(totalSoum);
-    }
-    
+        this.prixSoum = new SimpleFloatProperty(Float.valueOf(prixSoum));
+        this.totalSoum = new SimpleFloatProperty(Float.valueOf(prixSoum) * Float.valueOf(quantite));
+    }    
 
     public String getArticle() {
         return article.get();
@@ -43,6 +48,9 @@ public class SoumArticles {
     public StringProperty descProperty() {
         return desc;
     }
+    public void addDesc(String desc) {
+        this.desc.concat(this.desc + "\n" + desc);
+    }    
     
     
     public float getQuantite() {
@@ -88,4 +96,6 @@ public class SoumArticles {
     public FloatProperty totalSoumProperty() {
         return totalSoum;
     }    
+
+
 }
