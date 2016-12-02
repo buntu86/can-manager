@@ -15,16 +15,12 @@ import javafx.scene.control.TreeItem;
 public class Catalog {
     private Connection conn = null;
     private MainApp mainApp;
-    private String fileName;
+    private String fileName = "";
     
-    public Catalog() throws SQLException{
-        setFileName(System.getProperty("user.home") + System.getProperty("file.separator") + "Desktop" + System.getProperty("file.separator") + "can2.db");
+    public Catalog() {
+        
     }
 
-    public void initialize(){
-        connect();
-    }
-    
     public void initialize(String fileName){
         setFileName(fileName);       
         connect();
@@ -37,7 +33,7 @@ public class Catalog {
     private boolean connect()
     {
         if(Files.exists(Paths.get(fileName))) {
-            System.out.println("[ V ] File can.db exist");
+            System.out.println("[ V ] File \"" + fileName + "\" exist");
 
             try {
                 this.conn = DriverManager.getConnection("jdbc:sqlite:" + fileName);
@@ -49,7 +45,7 @@ public class Catalog {
             }
         }
         else {
-            System.out.println("[ X ] File can.db don't exist");
+            System.out.println("[ X ] File \"" + fileName + "\" don't exist");
             return false;
         }        
     }      
@@ -253,6 +249,35 @@ public class Catalog {
         
         return article;
     }
+    
+    public String getArticleFromArticleSubVar(int numArticle, int numSubArticle, int var) {
+        String sql = "SELECT * FROM CAN WHERE position=" + numArticle + " AND subPosition=" + numSubArticle + " AND variable=" + var;
+        String varString = new String(), lineString = new String("1");
+        
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            int begin = 0;
+
+            while(rs.next()){
+                begin = new Integer(rs.getString("begin"));
+                if(begin != 0)
+                {
+                    if(begin != 1)
+                        varString = new String(varString.concat(rs.getString("text").substring(0, begin)));
+                }
+                else
+                    varString = new String(varString.concat(rs.getString("text")));
+
+                lineString = rs.getString("line");
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }        
+        
+        return varString;      
+    }    
     
     public TreeItem<CatalogArticles> getTreeCan()
     {

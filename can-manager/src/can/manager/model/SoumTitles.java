@@ -149,11 +149,7 @@ public final class SoumTitles {
             btn = new Button("Convertir");
             btn.setOnAction((event) -> {                
                 MainApp main = null;
-                try {
-                    main = new MainApp();
-                } catch (SQLException ex) {
-                    Logger.getLogger(SoumTitles.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                main = new MainApp();
                 main.showConvertDialog(catalogDirectory.toString() + "\\F" + getNumCan() + getYearCan() + ".dbf");
             });
         }

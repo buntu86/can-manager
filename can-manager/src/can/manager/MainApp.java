@@ -14,7 +14,6 @@ import can.manager.view.Viewer_SoumissionController;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -32,15 +31,13 @@ public class MainApp extends Application {
 
     private static Stage primaryStage;
     private BorderPane rootLayout;
-    private Catalog can = new Catalog();
+    private final Catalog can = new Catalog();
     private Soum sia451;
     private ObservableList<CatalogArticles> articleFromSubPosition = FXCollections.observableArrayList();
     private AnchorPane catalogViewer, soumViewer;
     private String fileName;
     
-    public MainApp() throws SQLException {        
-        can.setMainApp(this);
-        can.initialize();
+    public MainApp() {        
     }
     
     public Catalog getCatalogCAN(){
@@ -123,6 +120,7 @@ public class MainApp extends Application {
     }
     
     public void openCatalogViewer(String fileName) {
+        can.setMainApp(this);
         can.initialize(fileName);
         Path pathFileName = Paths.get(fileName).getFileName();
         SoumTitles title = new SoumTitles(pathFileName.toString().substring(1, 4) + " 00");
