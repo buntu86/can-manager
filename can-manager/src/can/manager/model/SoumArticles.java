@@ -1,9 +1,5 @@
 package can.manager.model;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Properties;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -34,6 +30,15 @@ public class SoumArticles {
     }    
 
     SoumArticles(String article) {
+        if(article.length()<6)
+        {
+            String str = "";
+            for(int i=article.length(); i<6; i++)
+                str = str + "0";
+            article += str;
+            System.out.println(article);
+        }
+        
         this.article = new SimpleStringProperty(article);
         this.desc = new SimpleStringProperty("");
         this.quantite = new SimpleFloatProperty(0);
