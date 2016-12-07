@@ -22,7 +22,7 @@ public class Table_SoumissionController implements Initializable {
     private TableColumn<SoumArticles, String> descColumn;
     
     @FXML
-    private TableColumn<SoumArticles, Float> quantiteColumn;
+    private TableColumn<SoumArticles, String> quantiteColumn;
     
     @FXML
     private TableColumn<SoumArticles, String> umColumn;
@@ -39,7 +39,7 @@ public class Table_SoumissionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         articleColumn.setCellValueFactory(cellData -> cellData.getValue().articleProperty());
         descColumn.setCellValueFactory(cellData -> cellData.getValue().descProperty());
-        quantiteColumn.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty().asObject());
+        quantiteColumn.setCellValueFactory(cellData -> cellData.getValue().quantiteProperty());
         umColumn.setCellValueFactory(cellData -> cellData.getValue().umProperty());
         prixSoumColumn.setCellValueFactory(cellData -> cellData.getValue().prixSoumProperty().asObject());
         totalSoumColumn.setCellValueFactory(cellData -> cellData.getValue().totalSoumProperty().asObject());

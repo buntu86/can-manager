@@ -19,7 +19,7 @@ public class CatalogArticles {
     private StringProperty text;
 
     public CatalogArticles() {
-        this(0, 0, 0, 0, 0, null, null, 0, 0, null);
+        this(0, 0, 0, 0, 0, "", "", 0, 0, "");
     }
     
     public CatalogArticles(int ID, int position, int subPosition, int variable, int line, String alt, String unit, int publication, int begin, String text){

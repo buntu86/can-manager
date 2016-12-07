@@ -137,10 +137,11 @@ public class Soum {
             int numSubArticle = new Integer(article.getArticle().substring(3, 6));            
             String lastVar = new String("");
             
-            String sql = "SELECT * FROM records WHERE z01='G' AND z02 = " + this.numCanSelected + " AND z11 = 3 AND z03 = " + article.getArticle();
+            //Description
+            String sqlDesc = "SELECT * FROM records WHERE z01='G' AND z02 = " + this.numCanSelected + " AND z11 = 3 AND z03 = " + article.getArticle();
             try{
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
+                ResultSet rs = stmt.executeQuery(sqlDesc);
                 while(rs.next())
                 {
                     //from *.cmc
@@ -149,9 +150,6 @@ public class Soum {
                     
                     //from *.cms
                     article.addDesc(rs.getString("z23").trim() + "\n");
-                    article.addQuantite(rs.getString("z15"));
-                    article.addUm(rs.getString("z16"));
-                    article.addPrixSoum(rs.getString("z19"));  
                     
                     //ini lastVar for the next loop
                     lastVar = rs.getString("z04");
@@ -160,6 +158,40 @@ public class Soum {
             catch(SQLException e){
                 System.out.println("[ X ] " + e.getMessage());
             }
+
+            //Um
+            String sqlUm = "SELECT * FROM records WHERE z01='G' AND z02 = " + this.numCanSelected + " AND z11 = 5 AND z03 = " + article.getArticle();
+            try{
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sqlUm);
+                while(rs.next())
+                {
+                    //from *.cmc
+                    article.addUm(catalog.getArticleFromPosition(numArticle, numSubArticle).getUnit());
+                    
+                    //from *.cms
+                    article.addDesc(rs.getString("z23").trim() + "\n");
+                }
+            }
+            catch(SQLException e){
+                System.out.println("[ X ] " + e.getMessage());
+            }            
+
+            //Quantite
+            String sqlQuantite = "SELECT * FROM records WHERE z01='G' AND z02 = " + this.numCanSelected + " AND z11 = 6 AND z03 = " + article.getArticle();
+            try{
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sqlQuantite);
+                while(rs.next())
+                {                    
+                    //from *.cms
+                    article.addQuantite(rs.getString("z15"));
+                    article.addPrixSoum(rs.getString("z19"));
+                }
+            }
+            catch(SQLException e){
+                System.out.println("[ X ] " + e.getMessage());
+            }            
         }
     }
 
@@ -201,8 +233,6 @@ public class Soum {
 
             if(!listTitlesArticles.stream().anyMatch(a -> a.getArticle().equals(Integer.toString(xxx_xx0))))
                 listTitlesArticles.add(new SoumArticles(Integer.toString(xxx_xx0)));
-
-            System.out.println(article.getArticle() + ":" + xx0_000 + " " + xxx_000 + " " + xxx_x00 + " " + xxx_xx0);
         }
         
         //loop titles articles 

@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty;
 public class SoumArticles {
     private StringProperty article;
     private StringProperty desc;
-    private FloatProperty quantite;
+    private StringProperty quantite;
     private StringProperty um;
     private FloatProperty prixSoum;
     private FloatProperty totalSoum;
@@ -22,7 +22,7 @@ public class SoumArticles {
         
         this.article = new SimpleStringProperty(article);
         this.desc = new SimpleStringProperty(desc);
-        this.quantite = new SimpleFloatProperty(Float.valueOf(quantite));
+        this.quantite = new SimpleStringProperty(quantite);
         this.um = new SimpleStringProperty(um);
         this.prixSoum = new SimpleFloatProperty(Float.valueOf(prixSoum));
         this.totalSoum = new SimpleFloatProperty(Float.valueOf(prixSoum) * Float.valueOf(quantite));
@@ -36,12 +36,11 @@ public class SoumArticles {
             for(int i=article.length(); i<6; i++)
                 str = str + "0";
             article += str;
-            System.out.println(article);
         }
         
         this.article = new SimpleStringProperty(article);
         this.desc = new SimpleStringProperty("");
-        this.quantite = new SimpleFloatProperty(0);
+        this.quantite = new SimpleStringProperty("");
         this.um = new SimpleStringProperty("");
         this.prixSoum = new SimpleFloatProperty(0);
         this.totalSoum = new SimpleFloatProperty(0);
@@ -50,7 +49,7 @@ public class SoumArticles {
     SoumArticles(int article) {
         this.article = new SimpleStringProperty(Integer.toString(article));
         this.desc = new SimpleStringProperty("");
-        this.quantite = new SimpleFloatProperty(0);
+        this.quantite = new SimpleStringProperty("");
         this.um = new SimpleStringProperty("");
         this.prixSoum = new SimpleFloatProperty(0);
         this.totalSoum = new SimpleFloatProperty(0);
@@ -82,20 +81,21 @@ public class SoumArticles {
     }    
     
     
-    public float getQuantite() {
+    public String getQuantite() {
         return quantite.get();
     }
-    public void setQuantite(FloatProperty quantite) {
+    public void setQuantite(StringProperty quantite) {
         this.quantite = quantite;
     }
-    public FloatProperty quantiteProperty() {
+    public StringProperty quantiteProperty() {
         return quantite;
     }    
     void addQuantite(String quantite) {
         if(!quantite.isEmpty())
         {
-            this.quantite = new SimpleFloatProperty((this.quantite.get() + Float.valueOf(quantite))/1000);
-            setTotalSoum(new SimpleFloatProperty(this.getPrixSoum()*this.getQuantite()));
+            this.quantite = new SimpleStringProperty((this.quantite.get() + quantite));
+            //this.quantite = new SimpleStringProperty((this.quantite.get() + Float.valueOf(quantite))/1000);
+            //setTotalSoum(new SimpleStringProperty(this.getPrixSoum()*this.getQuantite()));
         }
     }    
 
@@ -110,7 +110,8 @@ public class SoumArticles {
         return um;
     }
     void addUm(String um) {
-        this.um = new SimpleStringProperty(this.um.get().concat("\n" + um.trim()));
+        if(!um.equals(""))
+            this.um = new SimpleStringProperty(um.trim());
     }    
     
     
@@ -127,7 +128,7 @@ public class SoumArticles {
         if(!prixSoum.isEmpty())
         {
             this.prixSoum = new SimpleFloatProperty((this.prixSoum.get() + Float.valueOf(prixSoum))/1000);
-            setTotalSoum(new SimpleFloatProperty(this.getPrixSoum()*this.getQuantite()));
+            //setTotalSoum(new SimpleStringProperty(this.getPrixSoum()*this.getQuantite()));
         }
     }
     
