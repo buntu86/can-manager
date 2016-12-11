@@ -25,8 +25,8 @@ import javafx.scene.image.ImageView;
 public final class SoumTitles {
     private Connection conn = null;
     private final Path listCatalogCanFile, catalogDirectory;
-    private final StringProperty nomCan;
     private final IntegerProperty numCan, yearCan;
+    private final StringProperty nomCan;    
     private final SimpleObjectProperty<ImageView> etatCan;
     private final SimpleObjectProperty<Button> buttonConvert;
     private int idTabPane = 0;
@@ -39,9 +39,21 @@ public final class SoumTitles {
         connect(); 
         this.numCan = new SimpleIntegerProperty(Integer.parseInt(fromCms.substring(0, 3)));
         this.yearCan = new SimpleIntegerProperty(Integer.parseInt(fromCms.substring(4, 6)));
-        this.nomCan = new SimpleStringProperty(constNomCan());
+        this.nomCan = new SimpleStringProperty(constNomCan(0));
         this.etatCan = new SimpleObjectProperty(constEtatCan());
         this.buttonConvert = new SimpleObjectProperty(constButtonConvert());
+    }
+    
+    public SoumTitles(){
+        Config config = new Config();
+        this.listCatalogCanFile = config.getListCatalogCanFile();
+        this.catalogDirectory = config.getCatalogDirectory();
+        connect();     
+        this.numCan = null;
+        this.nomCan = null;
+        this.yearCan = null;
+        this.etatCan = null;
+        this.buttonConvert = null;
     }
 
     private boolean connect()
@@ -87,8 +99,11 @@ public final class SoumTitles {
     }
     
     //NOM CAN
-    private String constNomCan(){
-        String sql = "SELECT * FROM titles WHERE num=" + getNumCan();
+    public String constNomCan(int numCan){
+        if(numCan == 0)
+            numCan = getNumCan();
+        
+        String sql = "SELECT * FROM titles WHERE num=" + numCan;
         String tempNomCan = null;
         try{
             Statement stmt = conn.createStatement();

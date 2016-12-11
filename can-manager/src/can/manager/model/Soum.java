@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -25,6 +26,7 @@ public class Soum {
     private final Config config = new Config();
     private final Catalog catalog = new Catalog();
     private int yearCanSelected;
+    private float totalCahier = 0;
     
     public Soum(Path pathFileCms) {
 
@@ -115,6 +117,7 @@ public class Soum {
     public void setArticles() {
         String sql = "SELECT * FROM records WHERE z01='G' AND z02 = " + this.numCanSelected + " AND (z11 = 2)";
         catalog.initialize(config.getCatalogDirectory().toString()+ System.getProperty("file.separator") + "F" + this.numCanSelected + this.yearCanSelected + ".cmc");
+        totalCahier = 0;
         
         try{
                 Statement stmt = conn.createStatement();
@@ -177,7 +180,7 @@ public class Soum {
                 System.out.println("[ X ] " + e.getMessage());
             }            
 
-            //Quantite
+            //Quantite + prix
             String sqlQuantite = "SELECT * FROM records WHERE z01='G' AND z02 = " + this.numCanSelected + " AND z11 = 6 AND z03 = " + article.getArticle();
             try{
                 Statement stmt = conn.createStatement();
@@ -187,6 +190,8 @@ public class Soum {
                     //from *.cms
                     article.addQuantite(rs.getString("z15"));
                     article.addPrixSoum(rs.getString("z19"));
+                    if(!rs.getString("z19").isEmpty() && !rs.getString("z15").isEmpty())
+                        totalCahier = (Float.parseFloat(rs.getString("z19")) * Float.parseFloat(rs.getString("z15"))) + totalCahier;
                 }
             }
             catch(SQLException e){
@@ -247,5 +252,10 @@ public class Soum {
             }
         }
     }
-}
 
+    public String getTotalCahier() {
+
+        return String.format("%.2f", this.totalCahier / 100000);
+                
+    }
+}

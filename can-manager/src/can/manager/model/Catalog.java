@@ -264,10 +264,10 @@ public class Catalog {
                 if(begin != 0)
                 {
                     if(begin != 1)
-                        varString = new String(varString.concat(rs.getString("text").substring(0, begin)));
+                        varString = new String(varString.concat(rs.getString("text").substring(0, begin)).concat("\n"));
                 }
                 else
-                    varString = new String(varString.concat(rs.getString("text")));
+                    varString = new String(varString.concat(rs.getString("text")).concat("\n"));
 
                 lineString = rs.getString("line");
             }
