@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -27,6 +26,7 @@ public class Soum {
     private final Catalog catalog = new Catalog();
     private int yearCanSelected;
     private float totalCahier = 0;
+    private String soumDescNumMandat="", soumDescNomMandat="";
     
     public Soum(Path pathFileCms) {
 
@@ -34,6 +34,7 @@ public class Soum {
         if(connect())
         {
             setTitlesCan();
+            setDescSoum();
         }
     }   
     
@@ -257,5 +258,40 @@ public class Soum {
 
         return String.format("%.2f", this.totalCahier / 100000);
                 
+    }
+
+    private void setDescSoum() {
+        
+        String sql = "SELECT z21 FROM records WHERE z01='A'";
+        try{
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+
+                soumDescNumMandat = rs.getString("z21");
+        }
+        catch(SQLException e){
+            soumDescNumMandat = "";
+            System.out.println("[ X ] " + e.getMessage());
+        }
+
+        String sql1 = "SELECT z23 FROM records WHERE z01='A'";
+        try{
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql1);
+
+                soumDescNomMandat = rs.getString("z23");
+        }
+        catch(SQLException e){
+            soumDescNomMandat = "";
+            System.out.println("[ X ] " + e.getMessage());
+        }
+    }
+
+    public String getDescNumMandat() {
+        return this.soumDescNumMandat;
+    }
+
+    public String getDescNomMandat() {
+        return this.soumDescNomMandat;
     }
 }

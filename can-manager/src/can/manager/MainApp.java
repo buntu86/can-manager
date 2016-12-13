@@ -110,6 +110,7 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("view/Viewer_Soumission.fxml"));
             soumViewer = (AnchorPane) loader.load();
             rootLayout.setCenter(soumViewer);
+
             
             Viewer_SoumissionController controller = loader.getController();
             controller.setMainApp(this);
@@ -233,5 +234,9 @@ public class MainApp extends Application {
     
     public ObservableList<SoumTitles> getTitleCan(){
         return this.sia451.getTitlesCan();
-    }    
+    }
+    
+    public void setPrimaryTitle(String str){
+        primaryStage.setTitle(str);
+    }
 }

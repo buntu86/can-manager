@@ -34,6 +34,7 @@ public class Viewer_SoumissionController implements Initializable {
 
     public void showTabPane() {
         sia451 = mainApp.getSia451();
+        mainApp.setPrimaryTitle(sia451.getDescNumMandat() + " " + sia451.getDescNomMandat() + " / CanManager");
         int i=0;
 
         for(SoumTitles title:sia451.getTitlesCan())

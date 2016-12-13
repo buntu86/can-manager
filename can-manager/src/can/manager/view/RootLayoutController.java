@@ -78,7 +78,7 @@ public class RootLayoutController implements Initializable {
     @FXML
     private void handleAproposDe() {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Can manager");
+        alert.setTitle("CanManager");
         alert.setHeaderText("A propos de");
         alert.setContentText("Auteur: Adrien Pillonel");
 
@@ -93,10 +93,12 @@ public class RootLayoutController implements Initializable {
     @FXML
     private void handleCloseCatalog(){
         mainApp.closeCatalogViewer();
+        mainApp.setPrimaryTitle("CanManager");
     }
 
     @FXML
     private void handleCloseSoum(){
         mainApp.closeSoumViewer();
+        mainApp.setPrimaryTitle("CanManager");
     }
 }
